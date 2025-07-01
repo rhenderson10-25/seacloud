@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Analysis Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .executive-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            color: white;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .metric-card {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .metric-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .chart-container {
+            margin: 40px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .chart-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .insight-card {
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .insight-card.opportunity {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .insight-card.warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .insight-card.growth {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .insight-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Customer Analysis Dashboard</h1>
+        
+        <div class="executive-summary">
+            <h2 style="margin-top: 0;">Executive Summary</h2>
+            <p><strong>Bottom Line Up Front:</strong> Your customer base is dominated by US iPhone users (56% iPhone, 64% US), but web users convert at nearly 3x the rate of mobile users (21.4% vs 7.5% iPhone, 5.9% Android). Staff referrals show exceptional 45% conversion rates.</p>
+            
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-number">1,881</div>
+                    <div>Total Customers</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">11.1%</div>
+                    <div>Overall Conversion</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">96</div>
+                    <div>Countries</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">56%</div>
+                    <div>iPhone Users</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="two-col">
+            <div class="chart-container">
+                <div class="chart-title">Customer Distribution by Country</div>
+                <canvas id="countryChart" width="400" height="300"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-title">User Distribution by Source/Channel</div>
+                <canvas id="sourceChart" width="400" height="300"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">Geographic Market Share Trends Over Time</div>
+            <canvas id="countryTrendChart" width="800" height="400"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">🔥 Conversion Rates by Channel - The Critical Gap</div>
+            <canvas id="conversionChart" width="800" height="400"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-title">📉 Monthly Conversion Rate Decline</div>
+            <canvas id="monthlyConversionChart" width="800" height="400"></canvas>
+        </div>
+
+        <div class="two-col">
+            <div class="chart-container">
+                <div class="chart-title">Channel Market Share Evolution</div>
+                <canvas id="channelTrendChart" width="400" height="300"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-title">Customer Segmentation by Children Count</div>
+                <canvas id="childrenChart" width="400" height="300"></canvas>
+            </div>
+        </div>
+
+        <h2>🎯 Strategic Insights & Opportunities</h2>
+        
+        <div class="insights-grid">
+            <div class="insight-card opportunity">
+                <h3>💻 Web Channel Optimization</h3>
+                <div class="insight-number">21.4% vs 7.5%</div>
+                <p>Web converts at 21.4% vs 7.5% iPhone. Focus marketing spend on driving web traffic and investigate why web users convert better.</p>
+            </div>
+            
+            <div class="insight-card warning">
+                <h3>👥 Staff Referral Program</h3>
+                <div class="insight-number">45.5%</div>
+                <p>Staff referrals show 45.5% conversion rate. Implement formal employee advocacy program and scale internal referral mechanisms.</p>
+            </div>
+            
+            <div class="insight-card growth">
+                <h3>📱 Mobile Experience Gap</h3>
+                <div class="insight-number">73% Traffic</div>
+                <p>iPhone: 56% users, 7.5% conversion. Android: 17% users, 5.9% conversion. Urgent mobile UX optimization needed.</p>
+            </div>
+        </div>
+
+        <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; border-radius: 10px; margin: 30px 0;">
+            <h3 style="color: #856404; margin-top: 0;">⚠️ Critical Warning Signs</h3>
+            <ul style="color: #856404;">
+                <li><strong>Declining Monthly Conversion</strong>: January: 19.5% → June: 8.4%</li>
+                <li><strong>Android Market Loss</strong>: Volume share dropped from 23.7% to 11.4%</li>
+                <li><strong>Mobile Conversion Crisis</strong>: 73% of traffic but poor conversion rates</li>
+            </ul>
+        </div>
+
+        <h2>📋 Immediate Action Plan</h2>
+        
+        <h2>🌍 Geographic Analysis: Your Ad Campaign Impact</h2>
+        
+        <div class="chart-container">
+            <div class="chart-title">Country Mix Changes: May → June 2025</div>
+            <canvas id="countryChangeChart" width="800" height="400"></canvas>
+        </div>
+
+        <div style="background: #e7f3ff; border: 1px solid #b3d9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h3 style="color: #0c5aa6; margin-top: 0;">🎯 Your Ad Campaign Geographic Results</h3>
+            <div style="color: #0c5aa6;">
+                <p><strong>Total Growth:</strong> +10 users (May: 358 → June: 368)</p>
+                <p><strong>Geographic Impact:</strong></p>
+                <ul>
+                    <li><strong>US dominated growth:</strong> +30 users (76.4% market share, up from 70.1%)</li>
+                    <li><strong>UK surge:</strong> +8 users (4.2% → 6.3% market share)</li>
+                    <li><strong>South Africa growth:</strong> +6 users (1.1% → 2.7% market share)</li>
+                    <li><strong>Canada decline:</strong> -4 users (6.7% → 5.4% market share)</li>
+                </ul>
+                <p><strong>Assessment:</strong> Your campaign was heavily US-focused, gaining 300% more users than total growth due to international user losses being offset by massive US gains.</p>
+            </div>
+        </div>
+
+        <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 20px; border-radius: 10px;">
+            <h3 style="color: #155724; margin-top: 0;">📋 Revised Action Plan</h3>
+            <div style="color: #155724;">
+                <h4>Next 30 Days (High Impact)</h4>
+                <ul>
+                    <li><strong>Scale Your Successful Web Campaign</strong>: +20% increase in web ad spend (drove +13 users at 21.4% conversion)</li>
+                    <li><strong>Mobile Conversion Audit</strong>: Fix the mobile UX gap (73% traffic, poor conversion)</li>
+                    <li><strong>Android Investigation</strong>: Understand why you lost 20 Android users (-32%)</li>
+                </ul>
+                <h4>Lower Priority</h4>
+                <ul>
+                    <li><strong>Staff Referrals</strong>: Monitor but don't prioritize (only 11 total users across 6 months)</li>
+                    <li><strong>International Expansion</strong>: Consider UK/South Africa opportunities</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Color scheme
+        const colors = {
+            primary: '#667eea',
+            secondary: '#764ba2',
+            success: '#4BC0C0',
+            warning: '#FFCE56',
+            danger: '#FF6384',
+            info: '#36A2EB',
+            purple: '#9966FF'
+        };
+
+        // Country Distribution Chart
+        const countryCtx = document.getElementById('countryChart').getContext('2d');
+        new Chart(countryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['United States', 'Canada', 'United Kingdom', 'South Africa', 'Australia', 'Others'],
+                datasets: [{
+                    data: [1197, 108, 65, 29, 28, 454],
+                    backgroundColor: [
+                        colors.danger,
+                        colors.info,
+                        colors.warning,
+                        colors.success,
+                        colors.purple,
+                        '#C9CBCF'
+                    ],
+                    borderWidth: 3,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    }
+                }
+            }
+        });
+
+        // Source Distribution Chart
+        const sourceCtx = document.getElementById('sourceChart').getContext('2d');
+        new Chart(sourceCtx, {
+            type: 'bar',
+            data: {
+                labels: ['iPhone', 'Web', 'Android', 'DP', 'Staff'],
+                datasets: [{
+                    label: 'Number of Users',
+                    data: [1056, 393, 321, 84, 11],
+                    backgroundColor: [
+                        colors.danger,
+                        colors.info,
+                        colors.success,
+                        colors.warning,
+                        colors.purple
+                    ],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Number of Users' }
+                    }
+                }
+            }
+        });
+
+        // Country Trends Chart
+        const countryTrendCtx = document.getElementById('countryTrendChart').getContext('2d');
+        new Chart(countryTrendCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025'],
+                datasets: [{
+                    label: 'United States',
+                    data: [81.8, 70.3, 71.6, 70.1, 76.4],
+                    borderColor: colors.danger,
+                    backgroundColor: colors.danger + '20',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 6
+                }, {
+                    label: 'Canada',
+                    data: [4.7, 8.0, 8.0, 6.7, 5.4],
+                    borderColor: colors.info,
+                    backgroundColor: colors.info + '20',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 6
+                }, {
+                    label: 'United Kingdom',
+                    data: [2.5, 3.2, 3.1, 4.2, 6.3],
+                    borderColor: colors.warning,
+                    backgroundColor: colors.warning + '20',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 90,
+                        title: { display: true, text: 'Market Share (%)' }
+                    }
+                }
+            }
+        });
+
+        // Conversion Rates Chart
+        const conversionCtx = document.getElementById('conversionChart').getContext('2d');
+        new Chart(conversionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Staff', 'Web', 'DP', 'iPhone', 'Android'],
+                datasets: [{
+                    label: 'Conversion Rate (%)',
+                    data: [45.5, 21.4, 14.3, 7.5, 5.9],
+                    backgroundColor: [
+                        colors.purple,
+                        colors.info,
+                        colors.warning,
+                        colors.danger,
+                        colors.success
+                    ],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 50,
+                        title: { display: true, text: 'Conversion Rate (%)' }
+                    }
+                }
+            }
+        });
+
+        // Monthly Conversion Trend
+        const monthlyConversionCtx = document.getElementById('monthlyConversionChart').getContext('2d');
+        new Chart(monthlyConversionCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025'],
+                datasets: [{
+                    label: 'Conversion Rate',
+                    data: [19.5, 8.3, 12.5, 7.6, 11.5, 8.4],
+                    borderColor: colors.danger,
+                    backgroundColor: colors.danger + '20',
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: colors.danger,
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 3,
+                    pointRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 25,
+                        title: { display: true, text: 'Conversion Rate (%)' }
+                    }
+                }
+            }
+        });
+
+        // Channel Evolution Chart
+        const channelTrendCtx = document.getElementById('channelTrendChart').getContext('2d');
+        new Chart(channelTrendCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'iPhone',
+                    data: [49.2, 54.5, 52.5, 57.1, 59.8, 61.1],
+                    borderColor: colors.danger,
+                    backgroundColor: colors.danger + '20',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Web',
+                    data: [30.9, 17.0, 21.8, 18.7, 17.9, 20.9],
+                    borderColor: colors.info,
+                    backgroundColor: colors.info + '20',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Android',
+                    data: [11.0, 23.7, 20.4, 18.7, 17.3, 11.4],
+                    borderColor: colors.success,
+                    backgroundColor: colors.success + '20',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 70,
+                        title: { display: true, text: 'Market Share (%)' }
+                    }
+                }
+            }
+        });
+
+        // Country Change Chart (May to June)
+        const countryChangeCtx = document.getElementById('countryChangeChart').getContext('2d');
+        new Chart(countryChangeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['US', 'GB', 'ZA', 'IN', 'CA', 'PH', 'IT', 'FR'],
+                datasets: [{
+                    label: 'User Change (May → June)',
+                    data: [30, 8, 6, 1, -4, -3, -3, -3],
+                    backgroundColor: function(context) {
+                        return context.parsed.y >= 0 ? colors.success : colors.danger;
+                    },
+                    borderColor: function(context) {
+                        return context.parsed.y >= 0 ? colors.success : colors.danger;
+                    },
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.parsed.y;
+                                return `${context.label}: ${value > 0 ? '+' : ''}${value} users`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Change in Users' }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
