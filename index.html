@@ -3,534 +3,930 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Analysis Dashboard</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <title>Daily Connect Savings Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             min-height: 100vh;
+            color: #191847;
         }
-        
+
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-        }
-        
-        .executive-summary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 30px;
-            border-radius: 15px;
-            margin: 30px 0;
-            color: white;
-        }
-        
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        
-        .metric-card {
-            text-align: center;
             padding: 20px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            backdrop-filter: blur(10px);
         }
-        
-        .metric-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        
-        .chart-container {
-            margin: 40px 0;
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 15px;
-        }
-        
-        .chart-title {
-            font-size: 1.5em;
-            font-weight: bold;
+
+        .header {
+            text-align: center;
             margin-bottom: 20px;
-            text-align: center;
-            color: #333;
+            padding: 20px 0;
         }
-        
-        .insights-grid {
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #191847;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #3C3C43;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .calculator-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 24px rgba(25, 24, 71, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .form-section {
+            margin-bottom: 24px;
+        }
+
+        .form-section h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #191847;
+            margin-bottom: 16px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: #191847;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #6693F6;
+            box-shadow: 0 0 0 3px rgba(102, 147, 246, 0.1);
+        }
+
+        .input-group input::placeholder {
+            color: #6c757d;
+        }
+
+        .tool-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 30px 0;
+            grid-template-columns: 1fr 200px;
+            gap: 16px;
+            margin-bottom: 16px;
         }
-        
-        .insight-card {
-            padding: 25px;
-            border-radius: 15px;
+
+        .additional-tools {
+            border: 2px dashed #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .additional-tool-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .additional-tool-item input {
+            flex: 1;
+        }
+
+        .remove-btn {
+            background: #FFA1A2;
             color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: #ff8586;
+        }
+
+        .add-tool-btn {
+            background: #1FD873;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .add-tool-btn:hover {
+            background: #1bc865;
+        }
+
+        .add-tool-btn:disabled {
+            background: #adb5bd;
+            cursor: not-allowed;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #6693F6 0%, #2D5AD3 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(102, 147, 246, 0.3);
+        }
+
+        .email-gate {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 24px rgba(25, 24, 71, 0.08);
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .email-gate h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #191847;
+            margin-bottom: 16px;
+        }
+
+        .email-gate p {
+            color: #6c757d;
+            margin-bottom: 24px;
+            font-size: 1.1rem;
+        }
+
+        .email-input-group {
+            display: flex;
+            gap: 12px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .email-input-group input {
+            flex: 1;
+            padding: 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .email-input-group button {
+            background: #6693F6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 16px 24px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .results {
+            display: none;
+        }
+
+        .visual-comparison {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 24px rgba(25, 24, 71, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .visual-comparison h3 {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #191847;
+            margin-bottom: 32px;
+        }
+
+        .chart-container {
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .chart-label {
+            font-weight: 600;
+            color: #191847;
+            width: 140px;
+            font-size: 0.95rem;
+        }
+
+        .bar-container {
+            flex: 1;
+            background: #f1f3f4;
+            border-radius: 8px;
+            height: 40px;
+            margin: 0 16px;
             position: relative;
             overflow: hidden;
         }
-        
-        .insight-card.opportunity {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 8px;
+            position: relative;
+            transition: width 1.5s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
         }
-        
-        .insight-card.warning {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+
+        .current-cost-bar {
+            background: linear-gradient(90deg, #FF6B6B, #EE5A52);
         }
-        
-        .insight-card.growth {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+
+        .daily-connect-bar {
+            background: linear-gradient(90deg, #6693F6, #2D5AD3);
         }
-        
-        .insight-number {
-            font-size: 2em;
-            font-weight: bold;
-            margin: 10px 0;
+
+        .amount-label {
+            font-weight: 700;
+            color: #191847;
+            width: 80px;
+            text-align: right;
+            font-size: 1rem;
         }
-        
-        .two-col {
+
+        .savings-highlight {
+            background: linear-gradient(135deg, #1FD873 0%, #17c966 100%);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .savings-highlight h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .savings-highlight .big-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .relatable-savings {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .relatable-savings h5 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .analogy-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin: 30px 0;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
         }
-        
+
+        .analogy-item {
+            text-align: center;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .analogy-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .analogy-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .analogy-text {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #6693F6 0%, #2D5AD3 100%);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .cta-section h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .benefit-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 32px 0;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .benefit-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+        }
+
+        .benefit-text {
+            font-weight: 600;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            background: white;
+            color: #2D5AD3;
+            text-decoration: none;
+            padding: 18px 36px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-btn.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cta-btn.secondary:hover {
+            background: white;
+            color: #2D5AD3;
+        }
+
+        .no-savings {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(25, 24, 71, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .no-savings h3 {
+            font-size: 1.5rem;
+            color: #191847;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .no-savings p {
+            color: #6c757d;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .contact-btn {
+            background: #6693F6;
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: #2D5AD3;
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 768px) {
-            .two-col {
-                grid-template-columns: 1fr;
+            .header h1 {
+                font-size: 2rem;
             }
+            
+            .header p {
+                font-size: 1.1rem;
+            }
+            
+            .calculator-card {
+                padding: 20px;
+            }
+            
+            .email-input-group {
+                flex-direction: column;
+            }
+            
+            .tool-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .additional-tool-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📊 Customer Analysis Dashboard</h1>
-        
-        <div class="executive-summary">
-            <h2 style="margin-top: 0;">Executive Summary</h2>
-            <p><strong>Bottom Line Up Front:</strong> Your customer base is dominated by US iPhone users (56% iPhone, 64% US), but web users convert at nearly 3x the rate of mobile users (21.4% vs 7.5% iPhone, 5.9% Android). Staff referrals show exceptional 45% conversion rates.</p>
-            
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-number">1,881</div>
-                    <div>Total Customers</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-number">11.1%</div>
-                    <div>Overall Conversion</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-number">96</div>
-                    <div>Countries</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-number">56%</div>
-                    <div>iPhone Users</div>
+        <div class="header">
+            <h1>Calculate Your Potential Savings</h1>
+            <p>See how much money your childcare center could save by switching to Daily Connect's all-in-one platform</p>
+        </div>
+
+        <div class="calculator-card" id="inputForm">
+            <div class="form-section">
+                <h3>Center Information</h3>
+                <div class="input-group">
+                    <label for="childrenCount">Number of Children in Your Center</label>
+                    <input type="number" id="childrenCount" placeholder="Enter number of children" min="1" required>
                 </div>
             </div>
-        </div>
 
-        <div class="two-col">
-            <div class="chart-container">
-                <div class="chart-title">Customer Distribution by Country</div>
-                <canvas id="countryChart" width="400" height="300"></canvas>
+            <div class="form-section">
+                <h3>Current Monthly Software Costs</h3>
+                <div class="tool-row">
+                    <div class="input-group">
+                        <label for="communicationName">Parent Communication App Name</label>
+                        <input type="text" id="communicationName" placeholder="e.g. ClassDojo, Seesaw, Remind">
+                    </div>
+                    <div class="input-group">
+                        <label for="communication">Monthly Cost</label>
+                        <input type="text" id="communication" placeholder="$0.00">
+                    </div>
+                </div>
+                <div class="tool-row">
+                    <div class="input-group">
+                        <label for="billingName">Parent Billing Software Name</label>
+                        <input type="text" id="billingName" placeholder="e.g. Brightwheel, Procare, Kangarootime">
+                    </div>
+                    <div class="input-group">
+                        <label for="billing">Monthly Cost</label>
+                        <input type="text" id="billing" placeholder="$0.00">
+                    </div>
+                </div>
+                <div class="tool-row">
+                    <div class="input-group">
+                        <label for="staffManagementName">Staff Management Tool Name</label>
+                        <input type="text" id="staffManagementName" placeholder="e.g. When I Work, Deputy, BambooHR">
+                    </div>
+                    <div class="input-group">
+                        <label for="staffManagement">Monthly Cost</label>
+                        <input type="text" id="staffManagement" placeholder="$0.00">
+                    </div>
+                </div>
+                <div class="tool-row">
+                    <div class="input-group">
+                        <label for="enrollmentName">Enrollment Software Name</label>
+                        <input type="text" id="enrollmentName" placeholder="e.g. KidKare, CenterWare, iCare">
+                    </div>
+                    <div class="input-group">
+                        <label for="enrollment">Monthly Cost</label>
+                        <input type="text" id="enrollment" placeholder="$0.00">
+                    </div>
+                </div>
+                <div class="tool-row">
+                    <div class="input-group">
+                        <label for="licensingName">Licensing and Administration Software Name</label>
+                        <input type="text" id="licensingName" placeholder="e.g. ChildCareCRM, MyKidzDay, Sandbox">
+                    </div>
+                    <div class="input-group">
+                        <label for="licensing">Monthly Cost</label>
+                        <input type="text" id="licensing" placeholder="$0.00">
+                    </div>
+                </div>
+                <div class="tool-row">
+                    <div class="input-group">
+                        <label for="curriculumName">Curriculum Management Software Name</label>
+                        <input type="text" id="curriculumName" placeholder="e.g. Teaching Strategies, HighScope">
+                    </div>
+                    <div class="input-group">
+                        <label for="curriculum">Monthly Cost</label>
+                        <input type="text" id="curriculum" placeholder="$0.00">
+                    </div>
+                </div>
+
+                <div class="additional-tools">
+                    <h4 style="margin-bottom: 16px; color: #191847;">Additional Tools (Optional)</h4>
+                    <div id="additionalToolsContainer"></div>
+                    <button type="button" class="add-tool-btn" id="addToolBtn" onclick="addAdditionalTool()">+ Add Another Tool</button>
+                </div>
             </div>
-            
-            <div class="chart-container">
-                <div class="chart-title">User Distribution by Source/Channel</div>
-                <canvas id="sourceChart" width="400" height="300"></canvas>
-            </div>
+
+            <button type="button" class="calculate-btn" onclick="calculateSavings()">Calculate My Savings</button>
         </div>
 
-        <div class="chart-container">
-            <div class="chart-title">Geographic Market Share Trends Over Time</div>
-            <canvas id="countryTrendChart" width="800" height="400"></canvas>
-        </div>
-
-        <div class="chart-container">
-            <div class="chart-title">🔥 Conversion Rates by Channel - The Critical Gap</div>
-            <canvas id="conversionChart" width="800" height="400"></canvas>
-        </div>
-
-        <div class="chart-container">
-            <div class="chart-title">📉 Monthly Conversion Rate Decline</div>
-            <canvas id="monthlyConversionChart" width="800" height="400"></canvas>
-        </div>
-
-        <div class="two-col">
-            <div class="chart-container">
-                <div class="chart-title">Channel Market Share Evolution</div>
-                <canvas id="channelTrendChart" width="400" height="300"></canvas>
-            </div>
-            
-            <div class="chart-container">
-                <div class="chart-title">Customer Segmentation by Children Count</div>
-                <canvas id="childrenChart" width="400" height="300"></canvas>
-            </div>
-        </div>
-
-        <h2>🎯 Strategic Insights & Opportunities</h2>
-        
-        <div class="insights-grid">
-            <div class="insight-card opportunity">
-                <h3>💻 Web Channel Optimization</h3>
-                <div class="insight-number">21.4% vs 7.5%</div>
-                <p>Web converts at 21.4% vs 7.5% iPhone. Focus marketing spend on driving web traffic and investigate why web users convert better.</p>
-            </div>
-            
-            <div class="insight-card warning">
-                <h3>👥 Staff Referral Program</h3>
-                <div class="insight-number">45.5%</div>
-                <p>Staff referrals show 45.5% conversion rate. Implement formal employee advocacy program and scale internal referral mechanisms.</p>
-            </div>
-            
-            <div class="insight-card growth">
-                <h3>📱 Mobile Experience Gap</h3>
-                <div class="insight-number">73% Traffic</div>
-                <p>iPhone: 56% users, 7.5% conversion. Android: 17% users, 5.9% conversion. Urgent mobile UX optimization needed.</p>
-            </div>
-        </div>
-
-        <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; border-radius: 10px; margin: 30px 0;">
-            <h3 style="color: #856404; margin-top: 0;">⚠️ Critical Warning Signs</h3>
-            <ul style="color: #856404;">
-                <li><strong>Declining Monthly Conversion</strong>: January: 19.5% → June: 8.4%</li>
-                <li><strong>Android Market Loss</strong>: Volume share dropped from 23.7% to 11.4%</li>
-                <li><strong>Mobile Conversion Crisis</strong>: 73% of traffic but poor conversion rates</li>
-            </ul>
-        </div>
-
-        <h2>📋 Immediate Action Plan</h2>
-        
-        <h2>🌍 Geographic Analysis: Your Ad Campaign Impact</h2>
-        
-        <div class="chart-container">
-            <div class="chart-title">Country Mix Changes: May → June 2025</div>
-            <canvas id="countryChangeChart" width="800" height="400"></canvas>
-        </div>
-
-        <div style="background: #e7f3ff; border: 1px solid #b3d9ff; padding: 20px; border-radius: 10px; margin: 20px 0;">
-            <h3 style="color: #0c5aa6; margin-top: 0;">🎯 Your Ad Campaign Geographic Results</h3>
-            <div style="color: #0c5aa6;">
-                <p><strong>Total Growth:</strong> +10 users (May: 358 → June: 368)</p>
-                <p><strong>Geographic Impact:</strong></p>
-                <ul>
-                    <li><strong>US dominated growth:</strong> +30 users (76.4% market share, up from 70.1%)</li>
-                    <li><strong>UK surge:</strong> +8 users (4.2% → 6.3% market share)</li>
-                    <li><strong>South Africa growth:</strong> +6 users (1.1% → 2.7% market share)</li>
-                    <li><strong>Canada decline:</strong> -4 users (6.7% → 5.4% market share)</li>
-                </ul>
-                <p><strong>Assessment:</strong> Your campaign was heavily US-focused, gaining 300% more users than total growth due to international user losses being offset by massive US gains.</p>
+        <div class="email-gate" id="emailGate">
+            <h3>See Your Detailed Savings</h3>
+            <p>Enter your email to see your complete savings breakdown and next steps</p>
+            <div class="email-input-group" style="margin-top: 24px;">
+                <input type="email" id="emailInput" placeholder="Enter your email address" required>
+                <button type="button" onclick="showResults()">Show Results</button>
             </div>
         </div>
 
-        <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 20px; border-radius: 10px;">
-            <h3 style="color: #155724; margin-top: 0;">📋 Revised Action Plan</h3>
-            <div style="color: #155724;">
-                <h4>Next 30 Days (High Impact)</h4>
-                <ul>
-                    <li><strong>Scale Your Successful Web Campaign</strong>: +20% increase in web ad spend (drove +13 users at 21.4% conversion)</li>
-                    <li><strong>Mobile Conversion Audit</strong>: Fix the mobile UX gap (73% traffic, poor conversion)</li>
-                    <li><strong>Android Investigation</strong>: Understand why you lost 20 Android users (-32%)</li>
-                </ul>
-                <h4>Lower Priority</h4>
-                <ul>
-                    <li><strong>Staff Referrals</strong>: Monitor but don't prioritize (only 11 total users across 6 months)</li>
-                    <li><strong>International Expansion</strong>: Consider UK/South Africa opportunities</li>
-                </ul>
+        <div class="results" id="results">
+            <div class="visual-comparison">
+                <h3>Your Monthly Cost Comparison</h3>
+                <div class="chart-container">
+                    <div class="chart-bar">
+                        <div class="chart-label">Current Costs</div>
+                        <div class="bar-container">
+                            <div class="bar-fill current-cost-bar" id="currentCostBar" style="width: 0%;">
+                                <span id="currentBarLabel"></span>
+                            </div>
+                        </div>
+                        <div class="amount-label" id="currentTotal">$0</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-label">Daily Connect</div>
+                        <div class="bar-container">
+                            <div class="bar-fill daily-connect-bar" id="dailyConnectBar" style="width: 0%;">
+                                <span id="dailyConnectBarLabel"></span>
+                            </div>
+                        </div>
+                        <div class="amount-label" id="dailyConnectPrice">$0</div>
+                    </div>
+                </div>
             </div>
+
+            <div class="savings-highlight">
+                <h4>Your Annual Savings with Daily Connect</h4>
+                <div class="big-number" id="annualSavings">$0</div>
+                <div style="font-size: 1.3rem; opacity: 0.9;" id="savingsPercentage">0% savings</div>
+                
+                <div class="relatable-savings">
+                    <h5>That's equivalent to:</h5>
+                    <div class="analogy-grid" id="analogyGrid">
+                        <!-- Analogies will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h3>Ready to Start Saving?</h3>
+                <p>Try Daily Connect risk-free and see the difference for yourself</p>
+                
+                <div class="benefit-list">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">✅</div>
+                        <div class="benefit-text">14-Day Free Trial</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">💳</div>
+                        <div class="benefit-text">No Credit Card Required</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">📋</div>
+                        <div class="benefit-text">No Long-Term Contracts</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🚫</div>
+                        <div class="benefit-text">No Cancellation Fees</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🎯</div>
+                        <div class="benefit-text">No Onboarding Fees</div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon">🚀</div>
+                        <div class="benefit-text">Start in Minutes</div>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="#" class="cta-btn">Start Free Trial</a>
+                    <a href="#" class="cta-btn secondary">Schedule Demo</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-savings hidden" id="noSavings">
+            <h3>Let's Explore Your Options</h3>
+            <p>Based on your inputs, Daily Connect may not be cheaper. But our platform combines all features into one app, with friendly support, no startup fees, and flexible contracts.</p>
+            <a href="#" class="contact-btn">Contact Us to Explore Pricing Options</a>
         </div>
     </div>
 
     <script>
-        // Color scheme
-        const colors = {
-            primary: '#667eea',
-            secondary: '#764ba2',
-            success: '#4BC0C0',
-            warning: '#FFCE56',
-            danger: '#FF6384',
-            info: '#36A2EB',
-            purple: '#9966FF'
-        };
+        // USD Currency formatter helper
+        function formatUSD(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
 
-        // Country Distribution Chart
-        const countryCtx = document.getElementById('countryChart').getContext('2d');
-        new Chart(countryCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['United States', 'Canada', 'United Kingdom', 'South Africa', 'Australia', 'Others'],
-                datasets: [{
-                    data: [1197, 108, 65, 29, 28, 454],
-                    backgroundColor: [
-                        colors.danger,
-                        colors.info,
-                        colors.warning,
-                        colors.success,
-                        colors.purple,
-                        '#C9CBCF'
-                    ],
-                    borderWidth: 3,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            padding: 20,
-                            usePointStyle: true
-                        }
+        let additionalToolCount = 0;
+        const maxAdditionalTools = 5;
+        let calculationData = {};
+
+        // Format currency inputs
+        function formatCurrency(input) {
+            let value = input.value.replace(/[^0-9.]/g, '');
+            if (value === '') {
+                input.value = '';
+                return;
+            }
+            
+            let num = parseFloat(value);
+            if (isNaN(num)) {
+                input.value = formatUSD(0);
+                return;
+            }
+            
+            input.value = formatUSD(num);
+        }
+
+        // Parse currency value
+        function parseCurrency(value) {
+            if (!value) return 0;
+            return parseFloat(value.replace(/[^0-9.]/g, '')) || 0;
+        }
+
+        // Add currency formatting to all cost inputs
+        document.addEventListener('blur', function(e) {
+            if (e.target.id === 'communication' || e.target.id === 'billing' || 
+                e.target.id === 'staffManagement' || e.target.id === 'enrollment' || 
+                e.target.id === 'licensing' || e.target.id === 'curriculum' ||
+                e.target.classList.contains('tool-cost')) {
+                formatCurrency(e.target);
+            }
+        }, true);
+
+        function addAdditionalTool() {
+            if (additionalToolCount >= maxAdditionalTools) return;
+            
+            additionalToolCount++;
+            const container = document.getElementById('additionalToolsContainer');
+            
+            const toolDiv = document.createElement('div');
+            toolDiv.className = 'additional-tool-item';
+            toolDiv.innerHTML = `
+                <input type="text" placeholder="Tool name" class="tool-name" style="margin-bottom: 8px;">
+                <input type="text" placeholder="$0.00" class="tool-cost">
+                <button type="button" class="remove-btn" onclick="removeAdditionalTool(this)">Remove</button>
+            `;
+            
+            container.appendChild(toolDiv);
+            
+            if (additionalToolCount >= maxAdditionalTools) {
+                document.getElementById('addToolBtn').disabled = true;
+                document.getElementById('addToolBtn').textContent = `Maximum ${maxAdditionalTools} tools reached`;
+            }
+        }
+
+        function removeAdditionalTool(button) {
+            button.parentElement.remove();
+            additionalToolCount--;
+            
+            const addBtn = document.getElementById('addToolBtn');
+            addBtn.disabled = false;
+            addBtn.textContent = '+ Add Another Tool';
+        }
+
+        function calculateSavings() {
+            // Validate required fields
+            const childrenCount = parseFloat(document.getElementById('childrenCount').value);
+            
+            if (!childrenCount || childrenCount < 1) {
+                alert('Please enter the number of children in your center');
+                return;
+            }
+
+            // Calculate current total costs
+            const costs = [
+                parseCurrency(document.getElementById('communication').value),
+                parseCurrency(document.getElementById('billing').value),
+                parseCurrency(document.getElementById('staffManagement').value),
+                parseCurrency(document.getElementById('enrollment').value),
+                parseCurrency(document.getElementById('licensing').value),
+                parseCurrency(document.getElementById('curriculum').value)
+            ];
+
+            // Add additional tools costs
+            const additionalToolCosts = document.querySelectorAll('.tool-cost');
+            additionalToolCosts.forEach(input => {
+                costs.push(parseCurrency(input.value));
+            });
+
+            const currentTotal = costs.reduce((sum, cost) => sum + cost, 0);
+
+            // Calculate Daily Connect cost
+            let dailyConnectCost;
+            if (childrenCount >= 100) {
+                // Show contact us message for 100+ children
+                document.getElementById('inputForm').style.display = 'none';
+                document.getElementById('noSavings').classList.remove('hidden');
+                document.querySelector('.no-savings h3').textContent = 'Custom Pricing Available';
+                document.querySelector('.no-savings p').textContent = 'For centers with 100+ children, we offer custom pricing tailored to your needs. Contact us to discuss your specific requirements and get a personalized quote.';
+                return;
+            } else {
+                dailyConnectCost = childrenCount * 1.40;
+            }
+
+            // Store calculation data
+            calculationData = {
+                childrenCount,
+                currentTotal,
+                dailyConnectCost,
+                absoluteSavings: Math.max(0, currentTotal - dailyConnectCost),
+                percentSavings: currentTotal > 0 ? ((currentTotal - dailyConnectCost) / currentTotal * 100) : 0
+            };
+
+            // Hide form and show email gate
+            document.getElementById('inputForm').style.display = 'none';
+            document.getElementById('emailGate').style.display = 'block';
+        }
+
+        function showResults() {
+            const email = document.getElementById('emailInput').value;
+            
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            // Store email for future CRM integration
+            calculationData.email = email;
+
+            // Hide email gate
+            document.getElementById('emailGate').style.display = 'none';
+
+            // Check if there are savings
+            if (calculationData.dailyConnectCost >= calculationData.currentTotal) {
+                document.getElementById('noSavings').classList.remove('hidden');
+                return;
+            }
+
+            // Show results with animations
+            animateResults();
+            
+            document.getElementById('results').style.display = 'block';
+
+            // Scroll to results
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function animateResults() {
+            const { currentTotal, dailyConnectCost, absoluteSavings, percentSavings } = calculationData;
+            const annualSavings = absoluteSavings * 12;
+
+            // Set all values using USD formatter
+            document.getElementById('currentTotal').textContent = formatUSD(currentTotal);
+            document.getElementById('dailyConnectPrice').textContent = formatUSD(dailyConnectCost);
+            document.getElementById('annualSavings').textContent = formatUSD(annualSavings);
+            document.getElementById('savingsPercentage').textContent = `${percentSavings.toFixed(1)}% savings`;
+
+            // Calculate bar widths (current cost = 100%, daily connect proportional)
+            const maxAmount = Math.max(currentTotal, dailyConnectCost);
+            const currentCostWidth = (currentTotal / maxAmount) * 100;
+            const dailyConnectWidth = (dailyConnectCost / maxAmount) * 100;
+
+            // Animate bars after a short delay
+            setTimeout(() => {
+                const currentBar = document.getElementById('currentCostBar');
+                const dailyConnectBar = document.getElementById('dailyConnectBar');
+                
+                currentBar.style.width = currentCostWidth + '%';
+                dailyConnectBar.style.width = dailyConnectWidth + '%';
+
+                // Add labels inside bars after animation using USD formatter
+                setTimeout(() => {
+                    if (currentCostWidth > 25) {
+                        document.getElementById('currentBarLabel').textContent = formatUSD(currentTotal);
                     }
+                    if (dailyConnectWidth > 25) {
+                        document.getElementById('dailyConnectBarLabel').textContent = formatUSD(dailyConnectCost);
+                    }
+                }, 800);
+            }, 300);
+
+            // Generate relatable analogies
+            generateAnalogies(annualSavings);
+        }
+
+        function generateAnalogies(annualSavings) {
+            const analogies = [
+                { icon: '☕', item: 'Starbucks Lattes', cost: 5.50, unit: 'lattes' },
+                { icon: '🍕', item: 'Pizza Dinners', cost: 25, unit: 'pizzas' },
+                { icon: '🎬', item: 'Movie Tickets', cost: 12, unit: 'tickets' },
+                { icon: '⛽', item: 'Gas Fill-ups', cost: 45, unit: 'fill-ups' }
+            ];
+
+            const container = document.getElementById('analogyGrid');
+            container.innerHTML = '';
+
+            // Show all 4 specified analogies
+            for (const analogy of analogies) {
+                const quantity = Math.floor(annualSavings / analogy.cost);
+                if (quantity > 0) {
+                    const analogyDiv = document.createElement('div');
+                    analogyDiv.className = 'analogy-item';
+                    analogyDiv.innerHTML = `
+                        <div class="analogy-icon">${analogy.icon}</div>
+                        <div class="analogy-number">${quantity.toLocaleString()}</div>
+                        <div class="analogy-text">${analogy.unit}</div>
+                    `;
+                    container.appendChild(analogyDiv);
                 }
             }
-        });
-
-        // Source Distribution Chart
-        const sourceCtx = document.getElementById('sourceChart').getContext('2d');
-        new Chart(sourceCtx, {
-            type: 'bar',
-            data: {
-                labels: ['iPhone', 'Web', 'Android', 'DP', 'Staff'],
-                datasets: [{
-                    label: 'Number of Users',
-                    data: [1056, 393, 321, 84, 11],
-                    backgroundColor: [
-                        colors.danger,
-                        colors.info,
-                        colors.success,
-                        colors.warning,
-                        colors.purple
-                    ],
-                    borderRadius: 8,
-                    borderSkipped: false
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: { display: true, text: 'Number of Users' }
-                    }
-                }
-            }
-        });
-
-        // Country Trends Chart
-        const countryTrendCtx = document.getElementById('countryTrendChart').getContext('2d');
-        new Chart(countryTrendCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025'],
-                datasets: [{
-                    label: 'United States',
-                    data: [81.8, 70.3, 71.6, 70.1, 76.4],
-                    borderColor: colors.danger,
-                    backgroundColor: colors.danger + '20',
-                    tension: 0.4,
-                    fill: true,
-                    pointRadius: 6
-                }, {
-                    label: 'Canada',
-                    data: [4.7, 8.0, 8.0, 6.7, 5.4],
-                    borderColor: colors.info,
-                    backgroundColor: colors.info + '20',
-                    tension: 0.4,
-                    fill: true,
-                    pointRadius: 6
-                }, {
-                    label: 'United Kingdom',
-                    data: [2.5, 3.2, 3.1, 4.2, 6.3],
-                    borderColor: colors.warning,
-                    backgroundColor: colors.warning + '20',
-                    tension: 0.4,
-                    fill: true,
-                    pointRadius: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 90,
-                        title: { display: true, text: 'Market Share (%)' }
-                    }
-                }
-            }
-        });
-
-        // Conversion Rates Chart
-        const conversionCtx = document.getElementById('conversionChart').getContext('2d');
-        new Chart(conversionCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Staff', 'Web', 'DP', 'iPhone', 'Android'],
-                datasets: [{
-                    label: 'Conversion Rate (%)',
-                    data: [45.5, 21.4, 14.3, 7.5, 5.9],
-                    backgroundColor: [
-                        colors.purple,
-                        colors.info,
-                        colors.warning,
-                        colors.danger,
-                        colors.success
-                    ],
-                    borderRadius: 8,
-                    borderSkipped: false
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 50,
-                        title: { display: true, text: 'Conversion Rate (%)' }
-                    }
-                }
-            }
-        });
-
-        // Monthly Conversion Trend
-        const monthlyConversionCtx = document.getElementById('monthlyConversionChart').getContext('2d');
-        new Chart(monthlyConversionCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan 2025', 'Feb 2025', 'Mar 2025', 'Apr 2025', 'May 2025', 'Jun 2025'],
-                datasets: [{
-                    label: 'Conversion Rate',
-                    data: [19.5, 8.3, 12.5, 7.6, 11.5, 8.4],
-                    borderColor: colors.danger,
-                    backgroundColor: colors.danger + '20',
-                    tension: 0.4,
-                    fill: true,
-                    pointBackgroundColor: colors.danger,
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 3,
-                    pointRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 25,
-                        title: { display: true, text: 'Conversion Rate (%)' }
-                    }
-                }
-            }
-        });
-
-        // Channel Evolution Chart
-        const channelTrendCtx = document.getElementById('channelTrendChart').getContext('2d');
-        new Chart(channelTrendCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                datasets: [{
-                    label: 'iPhone',
-                    data: [49.2, 54.5, 52.5, 57.1, 59.8, 61.1],
-                    borderColor: colors.danger,
-                    backgroundColor: colors.danger + '20',
-                    tension: 0.4,
-                    fill: true
-                }, {
-                    label: 'Web',
-                    data: [30.9, 17.0, 21.8, 18.7, 17.9, 20.9],
-                    borderColor: colors.info,
-                    backgroundColor: colors.info + '20',
-                    tension: 0.4,
-                    fill: true
-                }, {
-                    label: 'Android',
-                    data: [11.0, 23.7, 20.4, 18.7, 17.3, 11.4],
-                    borderColor: colors.success,
-                    backgroundColor: colors.success + '20',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 70,
-                        title: { display: true, text: 'Market Share (%)' }
-                    }
-                }
-            }
-        });
-
-        // Country Change Chart (May to June)
-        const countryChangeCtx = document.getElementById('countryChangeChart').getContext('2d');
-        new Chart(countryChangeCtx, {
-            type: 'bar',
-            data: {
-                labels: ['US', 'GB', 'ZA', 'IN', 'CA', 'PH', 'IT', 'FR'],
-                datasets: [{
-                    label: 'User Change (May → June)',
-                    data: [30, 8, 6, 1, -4, -3, -3, -3],
-                    backgroundColor: function(context) {
-                        return context.parsed.y >= 0 ? colors.success : colors.danger;
-                    },
-                    borderColor: function(context) {
-                        return context.parsed.y >= 0 ? colors.success : colors.danger;
-                    },
-                    borderRadius: 8,
-                    borderSkipped: false
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const value = context.parsed.y;
-                                return `${context.label}: ${value > 0 ? '+' : ''}${value} users`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: { display: true, text: 'Change in Users' }
-                    }
-                }
-            }
-        });
+        }
     </script>
 </body>
 </html>
