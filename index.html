@@ -515,6 +515,27 @@
             }
         }
 
+        .preview-savings {
+            background: linear-gradient(135deg, #1FD873 0%, #17c966 100%);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .preview-savings h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .preview-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
         .hidden {
             display: none;
         }
@@ -578,26 +599,6 @@
                         <input type="text" id="enrollment" placeholder="$0.00">
                     </div>
                 </div>
-                <div class="tool-row">
-                    <div class="input-group">
-                        <label for="licensingName">Licensing and Administration Software Name</label>
-                        <input type="text" id="licensingName" placeholder="e.g. ChildCareCRM, MyKidzDay, Sandbox">
-                    </div>
-                    <div class="input-group">
-                        <label for="licensing">Monthly Cost</label>
-                        <input type="text" id="licensing" placeholder="$0.00">
-                    </div>
-                </div>
-                <div class="tool-row">
-                    <div class="input-group">
-                        <label for="curriculumName">Curriculum Management Software Name</label>
-                        <input type="text" id="curriculumName" placeholder="e.g. Teaching Strategies, HighScope">
-                    </div>
-                    <div class="input-group">
-                        <label for="curriculum">Monthly Cost</label>
-                        <input type="text" id="curriculum" placeholder="$0.00">
-                    </div>
-                </div>
 
                 <div class="additional-tools">
                     <h4 style="margin-bottom: 16px; color: #191847;">Additional Tools (Optional)</h4>
@@ -610,8 +611,15 @@
         </div>
 
         <div class="email-gate" id="emailGate">
-            <h3>See Your Detailed Savings</h3>
-            <p>Enter your email to see your complete savings breakdown and next steps</p>
+            <h3>See Your Complete Savings Breakdown</h3>
+            <p>Enter your email to unlock your detailed results and next steps</p>
+            
+            <div class="preview-savings">
+                <h4>Your Potential Annual Savings</h4>
+                <div class="preview-amount" id="previewAmount">$0</div>
+                <div class="preview-subtitle" id="previewSubtitle">Plus detailed comparison charts</div>
+            </div>
+            
             <div class="email-input-group" style="margin-top: 24px;">
                 <input type="email" id="emailInput" placeholder="Enter your email address" required>
                 <button type="button" onclick="showResults()">Show Results</button>
@@ -688,8 +696,8 @@
                 </div>
 
                 <div class="cta-buttons">
-                    <a href="#" class="cta-btn">Start Free Trial</a>
-                    <a href="#" class="cta-btn secondary">Schedule Demo</a>
+                    <a href="https://www.dailyconnect.com/register_dc?r=pricingcalc" class="cta-btn">Start Free Trial</a>
+                    <a href="https://calendly.com/d/3g7-zdj-jr5/daily-connect-demo" class="cta-btn secondary">Schedule Demo</a>
                 </div>
             </div>
         </div>
@@ -742,8 +750,7 @@
         // Add currency formatting to all cost inputs
         document.addEventListener('blur', function(e) {
             if (e.target.id === 'communication' || e.target.id === 'billing' || 
-                e.target.id === 'staffManagement' || e.target.id === 'enrollment' || 
-                e.target.id === 'licensing' || e.target.id === 'curriculum' ||
+                e.target.id === 'staffManagement' || e.target.id === 'enrollment' ||
                 e.target.classList.contains('tool-cost')) {
                 formatCurrency(e.target);
             }
@@ -794,9 +801,7 @@
                 parseCurrency(document.getElementById('communication').value),
                 parseCurrency(document.getElementById('billing').value),
                 parseCurrency(document.getElementById('staffManagement').value),
-                parseCurrency(document.getElementById('enrollment').value),
-                parseCurrency(document.getElementById('licensing').value),
-                parseCurrency(document.getElementById('curriculum').value)
+                parseCurrency(document.getElementById('enrollment').value)
             ];
 
             // Add additional tools costs
@@ -828,6 +833,17 @@
                 absoluteSavings: Math.max(0, currentTotal - dailyConnectCost),
                 percentSavings: currentTotal > 0 ? ((currentTotal - dailyConnectCost) / currentTotal * 100) : 0
             };
+
+            // Show preview in email gate
+            const annualSavings = calculationData.absoluteSavings * 12;
+            document.getElementById('previewAmount').textContent = formatUSD(annualSavings);
+            
+            if (calculationData.absoluteSavings > 0) {
+                const percentSaved = calculationData.percentSavings.toFixed(0);
+                document.getElementById('previewSubtitle').textContent = `That's ${percentSaved}% savings on your current costs!`;
+            } else {
+                document.getElementById('previewSubtitle').textContent = 'Plus detailed comparison and options';
+            }
 
             // Hide form and show email gate
             document.getElementById('inputForm').style.display = 'none';
