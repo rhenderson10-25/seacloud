@@ -112,14 +112,11 @@
         }
 
         .additional-tool-item {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
-            align-items: center;
-        }
-
-        .additional-tool-item input {
-            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 200px auto;
+            gap: 16px;
+            margin-bottom: 16px;
+            align-items: end;
         }
 
         .remove-btn {
@@ -131,6 +128,7 @@
             cursor: pointer;
             font-size: 14px;
             transition: all 0.3s ease;
+            height: 50px;
         }
 
         .remove-btn:hover {
@@ -326,47 +324,7 @@
             margin-bottom: 16px;
         }
 
-        .relatable-savings {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 24px;
-            margin-top: 24px;
-        }
 
-        .relatable-savings h5 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-
-        .analogy-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-        }
-
-        .analogy-item {
-            text-align: center;
-            padding: 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-        }
-
-        .analogy-icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
-
-        .analogy-number {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .analogy-text {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
 
         .cta-section {
             background: linear-gradient(135deg, #6693F6 0%, #2D5AD3 100%);
@@ -510,8 +468,14 @@
             }
             
             .additional-tool-item {
-                flex-direction: column;
-                align-items: stretch;
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .additional-tool-item .remove-btn {
+                margin-top: 8px;
+                height: auto;
+                padding: 12px 24px;
             }
         }
 
@@ -562,7 +526,7 @@
                 <div class="tool-row">
                     <div class="input-group">
                         <label for="communicationName">Parent Communication App Name</label>
-                        <input type="text" id="communicationName" placeholder="e.g. ClassDojo, Seesaw, Remind">
+                        <input type="text" id="communicationName">
                     </div>
                     <div class="input-group">
                         <label for="communication">Monthly Cost</label>
@@ -572,7 +536,7 @@
                 <div class="tool-row">
                     <div class="input-group">
                         <label for="billingName">Parent Billing Software Name</label>
-                        <input type="text" id="billingName" placeholder="e.g. Brightwheel, Procare, Kangarootime">
+                        <input type="text" id="billingName">
                     </div>
                     <div class="input-group">
                         <label for="billing">Monthly Cost</label>
@@ -582,7 +546,7 @@
                 <div class="tool-row">
                     <div class="input-group">
                         <label for="staffManagementName">Staff Management Tool Name</label>
-                        <input type="text" id="staffManagementName" placeholder="e.g. When I Work, Deputy, BambooHR">
+                        <input type="text" id="staffManagementName">
                     </div>
                     <div class="input-group">
                         <label for="staffManagement">Monthly Cost</label>
@@ -592,7 +556,7 @@
                 <div class="tool-row">
                     <div class="input-group">
                         <label for="enrollmentName">Enrollment Software Name</label>
-                        <input type="text" id="enrollmentName" placeholder="e.g. KidKare, CenterWare, iCare">
+                        <input type="text" id="enrollmentName">
                     </div>
                     <div class="input-group">
                         <label for="enrollment">Monthly Cost</label>
@@ -611,18 +575,33 @@
         </div>
 
         <div class="email-gate" id="emailGate">
-            <h3>See Your Complete Savings Breakdown</h3>
-            <p>Enter your email to unlock your detailed results and next steps</p>
+            <h3>Get Your Complete Savings Analysis</h3>
+            <p>Enter your email to unlock a detailed breakdown showing exactly how much you'll save each month, which tools you can eliminate, and the specific impact on your center's budget.</p>
             
             <div class="preview-savings">
                 <h4>Your Potential Annual Savings</h4>
                 <div class="preview-amount" id="previewAmount">$0</div>
                 <div class="preview-subtitle" id="previewSubtitle">Plus detailed comparison charts</div>
             </div>
+
+            <div style="background: rgba(102, 147, 246, 0.1); border-radius: 12px; padding: 20px; margin: 20px 0; text-align: left;">
+                <h5 style="color: #191847; font-weight: 600; margin-bottom: 12px; font-size: 1.1rem;">Your personalized report will include:</h5>
+                <ul style="color: #3C3C43; margin: 0; padding-left: 20px; line-height: 1.6;">
+                    <li>Side-by-side cost comparison with visual charts</li>
+                    <li>Your total annual savings with Daily Connect</li>
+                    <li>Real-world spending equivalents to put your savings in perspective</li>
+                    <li>Next steps to start your free trial</li>
+                </ul>
+            </div>
             
             <div class="email-input-group" style="margin-top: 24px;">
                 <input type="email" id="emailInput" placeholder="Enter your email address" required>
-                <button type="button" onclick="showResults()">Show Results</button>
+                <button type="button" onclick="showResults()">Get My Analysis</button>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <p style="color: #6c757d; font-size: 0.95rem; margin-bottom: 16px;">Or skip the analysis and try Daily Connect now:</p>
+                <a href="https://www.dailyconnect.com/register_dc?r=calculator" class="cta-btn" style="background: #1FD873; color: white; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; display: inline-block; transition: all 0.3s ease;">Start Free Trial</a>
             </div>
         </div>
 
@@ -655,13 +634,6 @@
                 <h4>Your Annual Savings with Daily Connect</h4>
                 <div class="big-number" id="annualSavings">$0</div>
                 <div style="font-size: 1.3rem; opacity: 0.9;" id="savingsPercentage">0% savings</div>
-                
-                <div class="relatable-savings">
-                    <h5>That's equivalent to:</h5>
-                    <div class="analogy-grid" id="analogyGrid">
-                        <!-- Analogies will be inserted here -->
-                    </div>
-                </div>
             </div>
 
             <div class="cta-section">
@@ -765,8 +737,14 @@
             const toolDiv = document.createElement('div');
             toolDiv.className = 'additional-tool-item';
             toolDiv.innerHTML = `
-                <input type="text" placeholder="Tool name" class="tool-name" style="margin-bottom: 8px;">
-                <input type="text" placeholder="$0.00" class="tool-cost">
+                <div class="input-group">
+                    <label>Tool Name</label>
+                    <input type="text" class="tool-name">
+                </div>
+                <div class="input-group">
+                    <label>Monthly Cost</label>
+                    <input type="text" class="tool-cost" placeholder="$0.00">
+                </div>
                 <button type="button" class="remove-btn" onclick="removeAdditionalTool(this)">Remove</button>
             `;
             
@@ -912,36 +890,10 @@
                     }
                 }, 800);
             }, 300);
-
-            // Generate relatable analogies
-            generateAnalogies(annualSavings);
         }
 
         function generateAnalogies(annualSavings) {
-            const analogies = [
-                { icon: '☕', item: 'Starbucks Lattes', cost: 5.50, unit: 'lattes' },
-                { icon: '🍕', item: 'Pizza Dinners', cost: 25, unit: 'pizzas' },
-                { icon: '🎬', item: 'Movie Tickets', cost: 12, unit: 'tickets' },
-                { icon: '⛽', item: 'Gas Fill-ups', cost: 45, unit: 'fill-ups' }
-            ];
-
-            const container = document.getElementById('analogyGrid');
-            container.innerHTML = '';
-
-            // Show all 4 specified analogies
-            for (const analogy of analogies) {
-                const quantity = Math.floor(annualSavings / analogy.cost);
-                if (quantity > 0) {
-                    const analogyDiv = document.createElement('div');
-                    analogyDiv.className = 'analogy-item';
-                    analogyDiv.innerHTML = `
-                        <div class="analogy-icon">${analogy.icon}</div>
-                        <div class="analogy-number">${quantity.toLocaleString()}</div>
-                        <div class="analogy-text">${analogy.unit}</div>
-                    `;
-                    container.appendChild(analogyDiv);
-                }
-            }
+            // This function is no longer used but kept for compatibility
         }
     </script>
 </body>
