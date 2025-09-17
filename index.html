@@ -1,972 +1,1975 @@
 <!DOCTYPE html>
-<html lang=“en”>
+
+<html lang="en">
+
 <head>
-    <meta charset=“UTF-8">
-    <meta name=“viewport” content=“width=device-width, initial-scale=1.0">
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Daily Connect Savings Calculator</title>
-    <link href=“https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;600;700&display=swap” rel=“stylesheet”>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
 
-        body {
-            font-family: ‘Proxima Nova’, -apple-system, BlinkMacSystemFont, ‘Segoe UI’, sans-serif;
+        /* Scoped styles to prevent conflicts */
+
+        .daily-connect-calculator {
+
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+
             min-height: 100vh;
+
             color: #191847;
+
+            line-height: 1.5;
+
         }
 
-        .container {
+
+
+        .daily-connect-calculator * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+
+
+        .daily-connect-calculator .container {
+
             max-width: 800px;
+
             margin: 0 auto;
+
             padding: 20px;
+
         }
 
-        .header {
+
+
+        .daily-connect-calculator .header {
+
             text-align: center;
+
             margin-bottom: 20px;
+
             padding: 20px 0;
+
         }
 
-        .header h1 {
+
+
+        .daily-connect-calculator .header h1 {
+
             font-size: 2.5rem;
+
             font-weight: 700;
+
             color: #191847;
+
             margin-bottom: 12px;
+
         }
 
-        .header p {
+
+
+        .daily-connect-calculator .header p {
+
             font-size: 1.2rem;
+
             color: #3C3C43;
+
             max-width: 600px;
+
             margin: 0 auto;
+
             line-height: 1.6;
+
         }
 
-        .calculator-card {
+
+
+        .daily-connect-calculator .calculator-card {
+
             background: white;
+
             border-radius: 16px;
+
             padding: 30px;
+
             box-shadow: 0 4px 24px rgba(25, 24, 71, 0.08);
+
             margin-bottom: 20px;
+
         }
 
-        .form-section {
+
+
+        .daily-connect-calculator .form-section {
+
             margin-bottom: 24px;
+
         }
 
-        .form-section h3 {
+
+
+        .daily-connect-calculator .form-section h3 {
+
             font-size: 1.3rem;
+
             font-weight: 600;
+
             color: #191847;
+
             margin-bottom: 16px;
+
         }
 
-        .input-group {
+
+
+        .daily-connect-calculator .input-group {
+
             margin-bottom: 16px;
+
         }
 
-        .input-group label {
+
+
+        .daily-connect-calculator .input-group label {
+
             display: block;
+
             font-weight: 600;
+
             color: #191847;
+
             margin-bottom: 8px;
+
             font-size: 1rem;
+
         }
 
-        .input-group input {
+
+
+        .daily-connect-calculator .input-group input {
+
             width: 100%;
+
             padding: 16px;
+
             border: 2px solid #e9ecef;
+
             border-radius: 8px;
+
             font-size: 1rem;
+
             font-family: inherit;
+
             transition: all 0.3s ease;
+
         }
 
-        .input-group input:focus {
+
+
+        .daily-connect-calculator .input-group input:focus {
+
             outline: none;
+
             border-color: #6693F6;
+
             box-shadow: 0 0 0 3px rgba(102, 147, 246, 0.1);
+
         }
 
-        .input-group input::placeholder {
+
+
+        .daily-connect-calculator .input-group input::placeholder {
+
             color: #6c757d;
+
         }
 
-        .tool-row {
+
+
+        .daily-connect-calculator .tool-row {
+
             display: grid;
+
             grid-template-columns: 1fr 200px;
+
             gap: 16px;
+
             margin-bottom: 16px;
+
         }
 
-        .additional-tools {
+
+
+        .daily-connect-calculator .additional-tools {
+
             border: 2px dashed #e9ecef;
+
             border-radius: 8px;
+
             padding: 20px;
+
             margin-top: 16px;
+
         }
 
-        .additional-tool-item {
+
+
+        .daily-connect-calculator .additional-tool-item {
+
             display: grid;
+
             grid-template-columns: 1fr 200px auto;
+
             gap: 16px;
+
             margin-bottom: 16px;
+
             align-items: end;
+
         }
 
-        .remove-btn {
+
+
+        .daily-connect-calculator .remove-btn {
+
             background: #FFA1A2;
+
             color: white;
+
             border: none;
+
             border-radius: 6px;
+
             padding: 8px 12px;
+
             cursor: pointer;
+
             font-size: 14px;
+
             transition: all 0.3s ease;
+
             height: 50px;
+
         }
 
-        .remove-btn:hover {
+
+
+        .daily-connect-calculator .remove-btn:hover {
+
             background: #ff8586;
+
         }
 
-        .add-tool-btn {
+
+
+        .daily-connect-calculator .add-tool-btn {
+
             background: #1FD873;
+
             color: white;
+
             border: none;
+
             border-radius: 8px;
+
             padding: 12px 24px;
+
             cursor: pointer;
+
             font-weight: 600;
+
             font-size: 1rem;
+
             transition: all 0.3s ease;
+
         }
 
-        .add-tool-btn:hover {
+
+
+        .daily-connect-calculator .add-tool-btn:hover {
+
             background: #1bc865;
+
         }
 
-        .add-tool-btn:disabled {
+
+
+        .daily-connect-calculator .add-tool-btn:disabled {
+
             background: #adb5bd;
+
             cursor: not-allowed;
+
         }
 
-        .calculate-btn {
+
+
+        .daily-connect-calculator .calculate-btn {
+
             width: 100%;
+
             background: linear-gradient(135deg, #6693F6 0%, #2D5AD3 100%);
+
             color: white;
+
             border: none;
+
             border-radius: 12px;
+
             padding: 20px;
+
             font-size: 1.2rem;
+
             font-weight: 600;
+
             cursor: pointer;
+
             transition: all 0.3s ease;
+
             margin-top: 20px;
+
         }
 
-        .calculate-btn:hover {
+
+
+        .daily-connect-calculator .calculate-btn:hover {
+
             transform: translateY(-2px);
+
             box-shadow: 0 8px 32px rgba(102, 147, 246, 0.3);
+
         }
 
-        .email-gate {
+
+
+        .daily-connect-calculator .email-gate {
+
             background: white;
+
             border-radius: 16px;
+
             padding: 30px;
+
             box-shadow: 0 4px 24px rgba(25, 24, 71, 0.08);
+
             text-align: center;
+
             margin-bottom: 20px;
+
             display: none;
+
         }
 
-        .email-gate h3 {
+
+
+        .daily-connect-calculator .email-gate h3 {
+
             font-size: 1.5rem;
+
             font-weight: 600;
+
             color: #191847;
+
             margin-bottom: 16px;
+
         }
 
-        .email-gate p {
+
+
+        .daily-connect-calculator .email-gate p {
+
             color: #6c757d;
+
             margin-bottom: 24px;
+
             font-size: 1.1rem;
+
         }
 
-        .email-input-group {
+
+
+        .daily-connect-calculator .email-input-group {
+
             display: flex;
+
             gap: 12px;
+
             max-width: 400px;
+
             margin: 0 auto;
+
         }
 
-        .email-input-group input {
+
+
+        .daily-connect-calculator .email-input-group input {
+
             flex: 1;
+
             padding: 16px;
+
             border: 2px solid #e9ecef;
+
             border-radius: 8px;
+
             font-size: 1rem;
+
         }
 
-        .email-input-group button {
+
+
+        .daily-connect-calculator .email-input-group button {
+
             background: #6693F6;
+
             color: white;
+
             border: none;
+
             border-radius: 8px;
+
             padding: 16px 24px;
+
             font-weight: 600;
+
             cursor: pointer;
+
             white-space: nowrap;
+
         }
 
-        .results {
+
+
+        .daily-connect-calculator .results {
+
             display: none;
+
         }
 
-        .visual-comparison {
+
+
+        .daily-connect-calculator .visual-comparison {
+
             background: white;
+
             border-radius: 16px;
+
             padding: 30px;
+
             box-shadow: 0 4px 24px rgba(25, 24, 71, 0.08);
+
             margin-bottom: 20px;
+
         }
 
-        .visual-comparison h3 {
+
+
+        .daily-connect-calculator .visual-comparison h3 {
+
             text-align: center;
+
             font-size: 1.8rem;
+
             font-weight: 700;
+
             color: #191847;
+
             margin-bottom: 32px;
+
         }
 
-        .chart-container {
+
+
+        .daily-connect-calculator .chart-container {
+
             max-width: 500px;
+
             margin: 0 auto 40px;
+
         }
 
-        .chart-bar {
+
+
+        .daily-connect-calculator .chart-bar {
+
             display: flex;
+
             align-items: center;
+
             margin-bottom: 24px;
+
             position: relative;
+
         }
 
-        .chart-label {
+
+
+        .daily-connect-calculator .chart-label {
+
             font-weight: 600;
+
             color: #191847;
+
             width: 140px;
+
             font-size: 0.95rem;
+
         }
 
-        .bar-container {
+
+
+        .daily-connect-calculator .bar-container {
+
             flex: 1;
+
             background: #f1f3f4;
+
             border-radius: 8px;
+
             height: 40px;
+
             margin: 0 16px;
+
             position: relative;
+
             overflow: hidden;
+
         }
 
-        .bar-fill {
+
+
+        .daily-connect-calculator .bar-fill {
+
             height: 100%;
+
             border-radius: 8px;
+
             position: relative;
+
             transition: width 1.5s ease-out;
+
             display: flex;
+
             align-items: center;
+
             justify-content: flex-end;
+
             padding-right: 12px;
+
             color: white;
+
             font-weight: 600;
+
             font-size: 0.9rem;
+
         }
 
-        .current-cost-bar {
+
+
+        .daily-connect-calculator .current-cost-bar {
+
             background: linear-gradient(90deg, #FF6B6B, #EE5A52);
+
         }
 
-        .daily-connect-bar {
+
+
+        .daily-connect-calculator .daily-connect-bar {
+
             background: linear-gradient(90deg, #6693F6, #2D5AD3);
+
         }
 
-        .amount-label {
+
+
+        .daily-connect-calculator .amount-label {
+
             font-weight: 700;
+
             color: #191847;
+
             width: 80px;
+
             text-align: right;
+
             font-size: 1rem;
+
         }
 
-        .savings-highlight {
+
+
+        .daily-connect-calculator .savings-highlight {
+
             background: linear-gradient(135deg, #1FD873 0%, #17c966 100%);
+
             border-radius: 16px;
+
             padding: 30px;
+
             text-align: center;
+
             color: white;
+
             margin-bottom: 20px;
+
         }
 
-        .savings-highlight h4 {
+
+
+        .daily-connect-calculator .savings-highlight h4 {
+
             font-size: 1.5rem;
+
             font-weight: 700;
+
             margin-bottom: 12px;
+
         }
 
-        .savings-highlight .big-number {
+
+
+        .daily-connect-calculator .savings-highlight .big-number {
+
             font-size: 3rem;
+
             font-weight: 700;
+
             margin-bottom: 16px;
+
         }
 
-        .cta-section {
+
+
+        .daily-connect-calculator .cta-section {
+
             background: linear-gradient(135deg, #6693F6 0%, #2D5AD3 100%);
+
             border-radius: 16px;
+
             padding: 30px;
+
             text-align: center;
+
             color: white;
+
             margin-top: 20px;
+
         }
 
-        .cta-section h3 {
+
+
+        .daily-connect-calculator .cta-section h3 {
+
             font-size: 2rem;
+
             font-weight: 700;
+
             margin-bottom: 16px;
+
         }
 
-        .cta-section p {
+
+
+        .daily-connect-calculator .cta-section p {
+
             font-size: 1.2rem;
+
             margin-bottom: 24px;
+
             opacity: 0.95;
+
             line-height: 1.6;
+
         }
 
-        .benefit-list {
+
+
+        .daily-connect-calculator .benefit-list {
+
             display: grid;
+
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
             gap: 16px;
+
             margin: 32px 0;
+
         }
 
-        .benefit-item {
+
+
+        .daily-connect-calculator .benefit-item {
+
             display: flex;
+
             align-items: center;
+
             background: rgba(255, 255, 255, 0.1);
+
             border-radius: 8px;
+
             padding: 16px;
+
         }
 
-        .benefit-icon {
+
+
+        .daily-connect-calculator .benefit-icon {
+
             font-size: 1.5rem;
+
             margin-right: 12px;
+
         }
 
-        .benefit-text {
+
+
+        .daily-connect-calculator .benefit-text {
+
             font-weight: 600;
+
         }
 
-        .cta-buttons {
+
+
+        .daily-connect-calculator .cta-buttons {
+
             display: flex;
+
             gap: 16px;
+
             justify-content: center;
+
             flex-wrap: wrap;
+
         }
 
-        .cta-btn {
+
+
+        .daily-connect-calculator .cta-btn {
+
             background: white;
+
             color: #2D5AD3;
+
             text-decoration: none;
+
             padding: 18px 36px;
+
             border-radius: 12px;
+
             font-weight: 700;
+
             font-size: 1.1rem;
+
             transition: all 0.3s ease;
+
             display: inline-block;
+
         }
 
-        .cta-btn:hover {
+
+
+        .daily-connect-calculator .cta-btn:hover {
+
             transform: translateY(-3px);
+
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+
         }
 
-        .cta-btn.secondary {
+
+
+        .daily-connect-calculator .cta-btn.secondary {
+
             background: transparent;
+
             color: white;
+
             border: 2px solid white;
+
         }
 
-        .cta-btn.secondary:hover {
+
+
+        .daily-connect-calculator .cta-btn.secondary:hover {
+
             background: white;
+
             color: #2D5AD3;
+
         }
 
-        .no-savings {
+
+
+        .daily-connect-calculator .no-savings {
+
             background: white;
+
             border-radius: 16px;
+
             padding: 30px;
+
             text-align: center;
+
             box-shadow: 0 4px 24px rgba(25, 24, 71, 0.08);
+
             margin-bottom: 20px;
+
         }
 
-        .no-savings h3 {
+
+
+        .daily-connect-calculator .no-savings h3 {
+
             font-size: 1.5rem;
+
             color: #191847;
+
             margin-bottom: 16px;
+
             font-weight: 600;
+
         }
 
-        .no-savings p {
+
+
+        .daily-connect-calculator .no-savings p {
+
             color: #6c757d;
+
             margin-bottom: 24px;
+
             line-height: 1.6;
+
         }
 
-        .contact-btn {
+
+
+        .daily-connect-calculator .contact-btn {
+
             background: #6693F6;
+
             color: white;
+
             text-decoration: none;
+
             padding: 16px 32px;
+
             border-radius: 8px;
+
             font-weight: 600;
+
             display: inline-block;
+
             transition: all 0.3s ease;
+
         }
 
-        .contact-btn:hover {
+
+
+        .daily-connect-calculator .contact-btn:hover {
+
             background: #2D5AD3;
+
             transform: translateY(-2px);
+
         }
+
+
+
+        .daily-connect-calculator .preview-savings {
+
+            background: linear-gradient(135deg, #1FD873 0%, #17c966 100%);
+
+            border-radius: 12px;
+
+            padding: 24px;
+
+            margin-top: 20px;
+
+            text-align: center;
+
+            color: white;
+
+        }
+
+
+
+        .daily-connect-calculator .preview-savings h4 {
+
+            font-size: 1.3rem;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+
+        }
+
+
+
+        .daily-connect-calculator .preview-amount {
+
+            font-size: 2.5rem;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+        }
+
+
+
+        .daily-connect-calculator .hidden {
+
+            display: none;
+
+        }
+
+
+
+        /* Mobile responsive */
 
         @media (max-width: 768px) {
-            .header h1 {
+
+            .daily-connect-calculator .header h1 {
+
                 font-size: 2rem;
+
             }
+
             
-            .header p {
+
+            .daily-connect-calculator .header p {
+
                 font-size: 1.1rem;
+
             }
+
             
-            .calculator-card {
+
+            .daily-connect-calculator .calculator-card {
+
                 padding: 20px;
+
             }
+
             
-            .email-input-group {
+
+            .daily-connect-calculator .email-input-group {
+
                 flex-direction: column;
+
             }
+
             
-            .tool-row {
+
+            .daily-connect-calculator .tool-row {
+
                 grid-template-columns: 1fr;
+
                 gap: 8px;
+
             }
+
             
-            .additional-tool-item {
+
+            .daily-connect-calculator .additional-tool-item {
+
                 grid-template-columns: 1fr;
+
                 gap: 8px;
+
             }
+
             
-            .additional-tool-item .remove-btn {
+
+            .daily-connect-calculator .additional-tool-item .remove-btn {
+
                 margin-top: 8px;
+
                 height: auto;
+
                 padding: 12px 24px;
+
             }
+
         }
 
-        .preview-savings {
-            background: linear-gradient(135deg, #1FD873 0%, #17c966 100%);
-            border-radius: 12px;
-            padding: 24px;
-            margin-top: 20px;
-            text-align: center;
-            color: white;
-        }
-
-        .preview-savings h4 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .preview-amount {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .hidden {
-            display: none;
-        }
     </style>
+
 </head>
+
 <body>
-    <div class=“container”>
-        <div class=“header”>
-            <h1>Calculate Your Potential Savings</h1>
-            <p>See how much money your childcare center could save by switching to Daily Connect’s all-in-one platform</p>
-        </div>
 
-        <div class=“calculator-card” id=“inputForm”>
-            <div class=“form-section”>
-                <h3>Center Information</h3>
-                <div class=“input-group”>
-                    <label for=“childrenCount”>Number of Children in Your Center</label>
-                    <input type=“number” id=“childrenCount” placeholder=“Enter number of children” min=“1” required>
-                </div>
+    <div class="daily-connect-calculator">
+
+        <div class="container">
+
+            <div class="header">
+
+                <h1>Calculate Your Potential Savings</h1>
+
+                <p>See how much money your childcare center could save by switching to Daily Connect's all-in-one platform</p>
+
             </div>
 
-            <div class=“form-section”>
-                <h3>Current Monthly Software Costs</h3>
-                <div class=“tool-row”>
-                    <div class=“input-group”>
-                        <label for=“communicationName”>Parent Communication App Name</label>
-                        <input type=“text” id=“communicationName”>
+
+
+            <div class="calculator-card" id="inputForm">
+
+                <div class="form-section">
+
+                    <h3>Center Information</h3>
+
+                    <div class="input-group">
+
+                        <label for="childrenCount">Number of Children in Your Center</label>
+
+                        <input type="number" id="childrenCount" placeholder="Enter number of children" min="1" required>
+
                     </div>
-                    <div class=“input-group”>
-                        <label for=“communication”>Monthly Cost</label>
-                        <input type=“text” id=“communication” placeholder=“$0.00">
-                    </div>
-                </div>
-                <div class=“tool-row”>
-                    <div class=“input-group”>
-                        <label for=“billingName”>Parent Billing Software Name</label>
-                        <input type=“text” id=“billingName”>
-                    </div>
-                    <div class=“input-group”>
-                        <label for=“billing”>Monthly Cost</label>
-                        <input type=“text” id=“billing” placeholder=“$0.00">
-                    </div>
-                </div>
-                <div class=“tool-row”>
-                    <div class=“input-group”>
-                        <label for=“staffManagementName”>Staff Management Tool Name</label>
-                        <input type=“text” id=“staffManagementName”>
-                    </div>
-                    <div class=“input-group”>
-                        <label for=“staffManagement”>Monthly Cost</label>
-                        <input type=“text” id=“staffManagement” placeholder=“$0.00">
-                    </div>
-                </div>
-                <div class=“tool-row”>
-                    <div class=“input-group”>
-                        <label for=“enrollmentName”>Enrollment Software Name</label>
-                        <input type=“text” id=“enrollmentName”>
-                    </div>
-                    <div class=“input-group”>
-                        <label for=“enrollment”>Monthly Cost</label>
-                        <input type=“text” id=“enrollment” placeholder=“$0.00">
-                    </div>
+
                 </div>
 
-                <div class=“additional-tools”>
-                    <h4 style=“margin-bottom: 16px; color: #191847;“>Additional Tools (Optional)</h4>
-                    <div id=“additionalToolsContainer”></div>
-                    <button type=“button” class=“add-tool-btn” id=“addToolBtn” onclick=“addAdditionalTool()“>+ Add Another Tool</button>
-                </div>
-            </div>
 
-            <button type=“button” class=“calculate-btn” onclick=“calculateSavings()“>Calculate My Savings</button>
-        </div>
 
-        <div class=“email-gate” id=“emailGate”>
-            <h3>Get Your Complete Savings Analysis</h3>
-            <p>Enter your email to unlock a detailed breakdown showing exactly how much you’ll save each month, which tools you can eliminate, and the specific impact on your center’s budget.</p>
-            
-            <div class=“preview-savings”>
-                <h4>Your Potential Annual Savings</h4>
-                <div class=“preview-amount” id=“previewAmount”>$0</div>
-                <div class=“preview-subtitle” id=“previewSubtitle”>Plus detailed comparison charts</div>
-            </div>
+                <div class="form-section">
 
-            <div style=“background: rgba(102, 147, 246, 0.1); border-radius: 12px; padding: 20px; margin: 20px 0; text-align: left;“>
-                <h5 style=“color: #191847; font-weight: 600; margin-bottom: 12px; font-size: 1.1rem;“>Your personalized report will include:</h5>
-                <ul style=“color: #3C3C43; margin: 0; padding-left: 20px; line-height: 1.6;“>
-                    <li>Side-by-side cost comparison with visual charts</li>
-                    <li>Your total annual savings with Daily Connect</li>
-                    <li>Real-world spending equivalents to put your savings in perspective</li>
-                    <li>Next steps to start your free trial</li>
-                </ul>
-            </div>
-            
-            <div class=“email-input-group” style=“margin-top: 24px;“>
-                <input type=“email” id=“emailInput” placeholder=“Enter your email address” required>
-                <button type=“button” onclick=“showResults()“>Get My Analysis</button>
-            </div>
+                    <h3>Current Monthly Software Costs</h3>
 
-            <div style=“margin-top: 20px;“>
-                <p style=“color: #6c757d; font-size: 0.95rem; margin-bottom: 16px;“>Or skip the analysis and try Daily Connect now:</p>
-                <a href=“https://www.dailyconnect.com/register_dc?r=calculator” class=“cta-btn” style=“background: #1FD873; color: white; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; display: inline-block; transition: all 0.3s ease;“>Start Free Trial</a>
-            </div>
-        </div>
+                    <div class="tool-row">
 
-        <div class=“results” id=“results”>
-            <div class=“visual-comparison”>
-                <h3>Your Monthly Cost Comparison</h3>
-                <div class=“chart-container”>
-                    <div class=“chart-bar”>
-                        <div class=“chart-label”>Current Costs</div>
-                        <div class=“bar-container”>
-                            <div class=“bar-fill current-cost-bar” id=“currentCostBar” style=“width: 0%;“>
-                                <span id=“currentBarLabel”></span>
-                            </div>
+                        <div class="input-group">
+
+                            <label for="communicationName">Parent Communication App Name</label>
+
+                            <input type="text" id="communicationName">
+
                         </div>
-                        <div class=“amount-label” id=“currentTotal”>$0</div>
-                    </div>
-                    <div class=“chart-bar”>
-                        <div class=“chart-label”>Daily Connect</div>
-                        <div class=“bar-container”>
-                            <div class=“bar-fill daily-connect-bar” id=“dailyConnectBar” style=“width: 0%;“>
-                                <span id=“dailyConnectBarLabel”></span>
-                            </div>
+
+                        <div class="input-group">
+
+                            <label for="communication">Monthly Cost</label>
+
+                            <input type="text" id="communication" placeholder="$0.00">
+
                         </div>
-                        <div class=“amount-label” id=“dailyConnectPrice”>$0</div>
+
                     </div>
+
+                    <div class="tool-row">
+
+                        <div class="input-group">
+
+                            <label for="billingName">Parent Billing Software Name</label>
+
+                            <input type="text" id="billingName">
+
+                        </div>
+
+                        <div class="input-group">
+
+                            <label for="billing">Monthly Cost</label>
+
+                            <input type="text" id="billing" placeholder="$0.00">
+
+                        </div>
+
+                    </div>
+
+                    <div class="tool-row">
+
+                        <div class="input-group">
+
+                            <label for="staffManagementName">Staff Management Tool Name</label>
+
+                            <input type="text" id="staffManagementName">
+
+                        </div>
+
+                        <div class="input-group">
+
+                            <label for="staffManagement">Monthly Cost</label>
+
+                            <input type="text" id="staffManagement" placeholder="$0.00">
+
+                        </div>
+
+                    </div>
+
+                    <div class="tool-row">
+
+                        <div class="input-group">
+
+                            <label for="enrollmentName">Enrollment Software Name</label>
+
+                            <input type="text" id="enrollmentName">
+
+                        </div>
+
+                        <div class="input-group">
+
+                            <label for="enrollment">Monthly Cost</label>
+
+                            <input type="text" id="enrollment" placeholder="$0.00">
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="additional-tools">
+
+                        <h4 style="margin-bottom: 16px; color: #191847;">Additional Tools (Optional)</h4>
+
+                        <div id="additionalToolsContainer"></div>
+
+                        <button type="button" class="add-tool-btn" id="addToolBtn">+ Add Another Tool</button>
+
+                    </div>
+
                 </div>
+
+
+
+                <button type="button" class="calculate-btn" id="calculateBtn">Calculate My Savings</button>
+
             </div>
 
-            <div class=“savings-highlight”>
-                <h4>Your Annual Savings with Daily Connect</h4>
-                <div class=“big-number” id=“annualSavings”>$0</div>
-                <div style=“font-size: 1.3rem; opacity: 0.9;” id=“savingsPercentage”>0% savings</div>
-            </div>
 
-            <div class=“cta-section”>
-                <h3>Ready to Start Saving?</h3>
-                <p>Try Daily Connect risk-free and see the difference for yourself</p>
+
+            <div class="email-gate" id="emailGate">
+
+                <h3>Get Your Complete Savings Analysis</h3>
+
+                <p>Enter your email to unlock a detailed breakdown showing exactly how much you'll save each month, which tools you can eliminate, and the specific impact on your center's budget.</p>
+
                 
-                <div class=“benefit-list”>
-                    <div class=“benefit-item”>
-                        <div class=“benefit-icon”>:white_check_mark:</div>
-                        <div class=“benefit-text”>14-Day Free Trial</div>
-                    </div>
-                    <div class=“benefit-item”>
-                        <div class=“benefit-icon”>:credit_card:</div>
-                        <div class=“benefit-text”>No Credit Card Required</div>
-                    </div>
-                    <div class=“benefit-item”>
-                        <div class=“benefit-icon”>:clipboard:</div>
-                        <div class=“benefit-text”>No Long-Term Contracts</div>
-                    </div>
-                    <div class=“benefit-item”>
-                        <div class=“benefit-icon”>:no_entry_sign:</div>
-                        <div class=“benefit-text”>No Cancellation Fees</div>
-                    </div>
-                    <div class=“benefit-item”>
-                        <div class=“benefit-icon”>:dart:</div>
-                        <div class=“benefit-text”>No Onboarding Fees</div>
-                    </div>
-                    <div class=“benefit-item”>
-                        <div class=“benefit-icon”>:rocket:</div>
-                        <div class=“benefit-text”>Start in Minutes</div>
-                    </div>
+
+                <div class="preview-savings">
+
+                    <h4>Your Potential Annual Savings</h4>
+
+                    <div class="preview-amount" id="previewAmount">$0</div>
+
+                    <div class="preview-subtitle" id="previewSubtitle">Plus detailed comparison charts</div>
+
                 </div>
 
-                <div class=“cta-buttons”>
-                    <a href=“https://www.dailyconnect.com/register_dc?r=pricingcalc” class=“cta-btn”>Start Free Trial</a>
-                    <a href=“https://calendly.com/d/3g7-zdj-jr5/daily-connect-demo” class=“cta-btn secondary”>Schedule Demo</a>
+
+
+                <div style="background: rgba(102, 147, 246, 0.1); border-radius: 12px; padding: 20px; margin: 20px 0; text-align: left;">
+
+                    <h5 style="color: #191847; font-weight: 600; margin-bottom: 12px; font-size: 1.1rem;">Your personalized report will include:</h5>
+
+                    <ul style="color: #3C3C43; margin: 0; padding-left: 20px; line-height: 1.6;">
+
+                        <li>Side-by-side cost comparison with visual charts</li>
+
+                        <li>Your total annual savings with Daily Connect</li>
+
+                        <li>Real-world spending equivalents to put your savings in perspective</li>
+
+                        <li>Next steps to start your free trial</li>
+
+                    </ul>
+
                 </div>
+
+                
+
+                <div class="email-input-group" style="margin-top: 24px;">
+
+                    <input type="email" id="emailInput" placeholder="Enter your email address" required>
+
+                    <button type="button" id="showResultsBtn">Get My Analysis</button>
+
+                </div>
+
+
+
+                <div style="margin-top: 20px;">
+
+                    <p style="color: #6c757d; font-size: 0.95rem; margin-bottom: 16px;">Or skip the analysis and try Daily Connect now:</p>
+
+                    <a href="https://www.dailyconnect.com/register_dc?r=calculator" class="cta-btn" style="background: #1FD873; color: white; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; display: inline-block; transition: all 0.3s ease;">Start Free Trial</a>
+
+                </div>
+
             </div>
+
+
+
+            <div class="results" id="results">
+
+                <div class="visual-comparison">
+
+                    <h3>Your Monthly Cost Comparison</h3>
+
+                    <div class="chart-container">
+
+                        <div class="chart-bar">
+
+                            <div class="chart-label">Current Costs</div>
+
+                            <div class="bar-container">
+
+                                <div class="bar-fill current-cost-bar" id="currentCostBar" style="width: 0%;">
+
+                                    <span id="currentBarLabel"></span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="amount-label" id="currentTotal">$0</div>
+
+                        </div>
+
+                        <div class="chart-bar">
+
+                            <div class="chart-label">Daily Connect</div>
+
+                            <div class="bar-container">
+
+                                <div class="bar-fill daily-connect-bar" id="dailyConnectBar" style="width: 0%;">
+
+                                    <span id="dailyConnectBarLabel"></span>
+
+                                </div>
+
+                            </div>
+
+                            <div class="amount-label" id="dailyConnectPrice">$0</div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="savings-highlight">
+
+                    <h4>Your Annual Savings with Daily Connect</h4>
+
+                    <div class="big-number" id="annualSavings">$0</div>
+
+                    <div style="font-size: 1.3rem; opacity: 0.9;" id="savingsPercentage">0% savings</div>
+
+                </div>
+
+
+
+                <div class="cta-section">
+
+                    <h3>Ready to Start Saving?</h3>
+
+                    <p>Try Daily Connect risk-free and see the difference for yourself</p>
+
+                    
+
+                    <div class="benefit-list">
+
+                        <div class="benefit-item">
+
+                            <div class="benefit-icon">✅</div>
+
+                            <div class="benefit-text">14-Day Free Trial</div>
+
+                        </div>
+
+                        <div class="benefit-item">
+
+                            <div class="benefit-icon">💳</div>
+
+                            <div class="benefit-text">No Credit Card Required</div>
+
+                        </div>
+
+                        <div class="benefit-item">
+
+                            <div class="benefit-icon">📋</div>
+
+                            <div class="benefit-text">No Long-Term Contracts</div>
+
+                        </div>
+
+                        <div class="benefit-item">
+
+                            <div class="benefit-icon">🚫</div>
+
+                            <div class="benefit-text">No Cancellation Fees</div>
+
+                        </div>
+
+                        <div class="benefit-item">
+
+                            <div class="benefit-icon">🎯</div>
+
+                            <div class="benefit-text">No Onboarding Fees</div>
+
+                        </div>
+
+                        <div class="benefit-item">
+
+                            <div class="benefit-icon">🚀</div>
+
+                            <div class="benefit-text">Start in Minutes</div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="cta-buttons">
+
+                        <a href="https://www.dailyconnect.com/register_dc?r=pricingcalc" class="cta-btn">Start Free Trial</a>
+
+                        <a href="https://calendly.com/d/3g7-zdj-jr5/daily-connect-demo" class="cta-btn secondary">Schedule Demo</a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="no-savings hidden" id="noSavings">
+
+                <h3>Let's Explore Your Options</h3>
+
+                <p>Based on your inputs, Daily Connect may not be cheaper. But our platform combines all features into one app, with friendly support, no startup fees, and flexible contracts.</p>
+
+                <a href="#" class="contact-btn">Contact Us to Explore Pricing Options</a>
+
+            </div>
+
         </div>
 
-        <div class=“no-savings hidden” id=“noSavings”>
-            <h3>Let’s Explore Your Options</h3>
-            <p>Based on your inputs, Daily Connect may not be cheaper. But our platform combines all features into one app, with friendly support, no startup fees, and flexible contracts.</p>
-            <a href=“#” class=“contact-btn”>Contact Us to Explore Pricing Options</a>
-        </div>
     </div>
 
+
+
     <script>
-        // Replace YOUR_WEB_APP_URL with your actual Google Apps Script Web App URL
-        const GOOGLE_SHEETS_URL = ‘YOUR_WEB_APP_URL_HERE’;
 
-        // USD Currency formatter helper
-        function formatUSD(amount) {
-            return new Intl.NumberFormat(‘en-US’, {
-                style: ‘currency’,
-                currency: ‘USD’,
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }).format(amount);
-        }
+        (function() {
 
-        let additionalToolCount = 0;
-        const maxAdditionalTools = 5;
-        let calculationData = {};
+            // Encapsulate all code to prevent global conflicts
 
-        // Format currency inputs
-        function formatCurrency(input) {
-            let value = input.value.replace(/[^0-9.]/g, ‘’);
-            if (value === ‘’) {
-                input.value = ‘’;
-                return;
-            }
-            
-            let num = parseFloat(value);
-            if (isNaN(num)) {
-                input.value = formatUSD(0);
-                return;
-            }
-            
-            input.value = formatUSD(num);
-        }
+            'use strict';
 
-        // Parse currency value
-        function parseCurrency(value) {
-            if (!value) return 0;
-            return parseFloat(value.replace(/[^0-9.]/g, ‘’)) || 0;
-        }
+            
 
-        // Add currency formatting to all cost inputs
-        document.addEventListener(‘blur’, function(e) {
-            if (e.target.id === ‘communication’ || e.target.id === ‘billing’ || 
-                e.target.id === ‘staffManagement’ || e.target.id === ‘enrollment’ ||
-                e.target.classList.contains(‘tool-cost’)) {
-                formatCurrency(e.target);
-            }
-        }, true);
+            // Configuration
 
-        function addAdditionalTool() {
-            if (additionalToolCount >= maxAdditionalTools) return;
-            
-            additionalToolCount++;
-            const container = document.getElementById(‘additionalToolsContainer’);
-            
-            const toolDiv = document.createElement(‘div’);
-            toolDiv.className = ‘additional-tool-item’;
-            toolDiv.innerHTML = `
-                <div class=“input-group”>
-                    <label>Tool Name</label>
-                    <input type=“text” class=“tool-name”>
-                </div>
-                <div class=“input-group”>
-                    <label>Monthly Cost</label>
-                    <input type=“text” class=“tool-cost” placeholder=“$0.00">
-                </div>
-                <button type=“button” class=“remove-btn” onclick=“removeAdditionalTool(this)“>Remove</button>
-            `;
-            
-            container.appendChild(toolDiv);
-            
-            if (additionalToolCount >= maxAdditionalTools) {
-                document.getElementById(‘addToolBtn’).disabled = true;
-                document.getElementById(‘addToolBtn’).textContent = `Maximum ${maxAdditionalTools} tools reached`;
-            }
-        }
+            const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyuJ3Vq9n-W8Rwxd83PQFeboWU_C-Q9cxojjN61_25kPx1SSFXRg42SyGRSN8FSa1er/exec';
 
-        function removeAdditionalTool(button) {
-            button.parentElement.remove();
-            additionalToolCount--;
-            
-            const addBtn = document.getElementById(‘addToolBtn’);
-            addBtn.disabled = false;
-            addBtn.textContent = ‘+ Add Another Tool’;
-        }
+            const MAX_ADDITIONAL_TOOLS = 5;
 
-        function calculateSavings() {
-            // Validate required fields
-            const childrenCount = parseFloat(document.getElementById(‘childrenCount’).value);
             
-            if (!childrenCount || childrenCount < 1) {
-                alert(‘Please enter the number of children in your center’);
-                return;
+
+            // State
+
+            let additionalToolCount = 0;
+
+            let calculationData = {};
+
+
+
+            // USD Currency formatter helper
+
+            function formatUSD(amount) {
+
+                return new Intl.NumberFormat('en-US', {
+
+                    style: 'currency',
+
+                    currency: 'USD',
+
+                    minimumFractionDigits: 2,
+
+                    maximumFractionDigits: 2
+
+                }).format(amount);
+
             }
 
-            // Calculate current total costs
-            const costs = [
-                parseCurrency(document.getElementById(‘communication’).value),
-                parseCurrency(document.getElementById(‘billing’).value),
-                parseCurrency(document.getElementById(‘staffManagement’).value),
-                parseCurrency(document.getElementById(‘enrollment’).value)
-            ];
 
-            // Add additional tools costs
-            const additionalToolCosts = document.querySelectorAll(‘.tool-cost’);
-            additionalToolCosts.forEach(input => {
-                costs.push(parseCurrency(input.value));
-            });
 
-            const currentTotal = costs.reduce((sum, cost) => sum + cost, 0);
+            // Format currency inputs
 
-            // Calculate Daily Connect cost
-            let dailyConnectCost;
-            if (childrenCount >= 100) {
-                // Show contact us message for 100+ children
-                document.getElementById(‘inputForm’).style.display = ‘none’;
-                document.getElementById(‘noSavings’).classList.remove(‘hidden’);
-                document.querySelector(‘.no-savings h3’).textContent = ‘Custom Pricing Available’;
-                document.querySelector(‘.no-savings p’).textContent = ‘For centers with 100+ children, we offer custom pricing tailored to your needs. Contact us to discuss your specific requirements and get a personalized quote.’;
-                return;
-            } else {
-                dailyConnectCost = childrenCount * 1.40;
-            }
+            function formatCurrency(input) {
 
-            // Store calculation data
-            calculationData = {
-                childrenCount,
-                currentTotal,
-                dailyConnectCost,
-                absoluteSavings: Math.max(0, currentTotal - dailyConnectCost),
-                percentSavings: currentTotal > 0 ? ((currentTotal - dailyConnectCost) / currentTotal * 100) : 0
-            };
+                let value = input.value.replace(/[^0-9.]/g, '');
 
-            // Show preview in email gate
-            const annualSavings = calculationData.absoluteSavings * 12;
-            document.getElementById(‘previewAmount’).textContent = formatUSD(annualSavings);
-            
-            if (calculationData.absoluteSavings > 0) {
-                const percentSaved = calculationData.percentSavings.toFixed(0);
-                document.getElementById(‘previewSubtitle’).textContent = `That’s ${percentSaved}% savings on your current costs!`;
-            } else {
-                document.getElementById(‘previewSubtitle’).textContent = ‘Plus detailed comparison and options’;
-            }
+                if (value === '') {
 
-            // Hide form and show email gate
-            document.getElementById(‘inputForm’).style.display = ‘none’;
-            document.getElementById(‘emailGate’).style.display = ‘block’;
-        }
+                    input.value = '';
 
-        function showResults() {
-            const email = document.getElementById(‘emailInput’).value;
-            
-            if (!email || !email.includes(‘@’)) {
-                alert(‘Please enter a valid email address’);
-                return;
-            }
+                    return;
 
-            // Store email for future CRM integration
-            calculationData.email = email;
-
-            // Collect all form data for Google Sheets
-            const formData = collectFormData();
-            
-            // Send data to Google Sheets
-            submitToGoogleSheets(formData);
-
-            // Hide email gate
-            document.getElementById(‘emailGate’).style.display = ‘none’;
-
-            // Check if there are savings
-            if (calculationData.dailyConnectCost >= calculationData.currentTotal) {
-                document.getElementById(‘noSavings’).classList.remove(‘hidden’);
-                return;
-            }
-
-            // Show results with animations
-            animateResults();
-            
-            document.getElementById(‘results’).style.display = ‘block’;
-
-            // Scroll to results
-            document.getElementById(‘results’).scrollIntoView({ behavior: ‘smooth’ });
-        }
-
-        function collectFormData() {
-            // Get additional tools data
-            const additionalToolNames = [];
-            const additionalToolCosts = [];
-            
-            const toolNameInputs = document.querySelectorAll(‘.tool-name’);
-            const toolCostInputs = document.querySelectorAll(‘.tool-cost’);
-            
-            toolNameInputs.forEach((input, index) => {
-                if (input.value.trim()) {
-                    additionalToolNames.push(input.value.trim());
-                    additionalToolCosts.push(parseCurrency(toolCostInputs[index].value));
                 }
-            });
 
-            // Prepare data object for Google Sheets
-            const data = {
-                email: calculationData.email,
-                childrenCount: calculationData.childrenCount,
-                communicationName: document.getElementById(‘communicationName’).value,
-                communicationCost: parseCurrency(document.getElementById(‘communication’).value),
-                billingName: document.getElementById(‘billingName’).value,
-                billingCost: parseCurrency(document.getElementById(‘billing’).value),
-                staffManagementName: document.getElementById(‘staffManagementName’).value,
-                staffManagementCost: parseCurrency(document.getElementById(‘staffManagement’).value),
-                enrollmentName: document.getElementById(‘enrollmentName’).value,
-                enrollmentCost: parseCurrency(document.getElementById(‘enrollment’).value),
-                additionalToolsNames: additionalToolNames,
-                additionalToolsCosts: additionalToolCosts,
-                currentTotal: calculationData.currentTotal,
-                dailyConnectCost: calculationData.dailyConnectCost,
-                monthlySavings: calculationData.absoluteSavings,
-                annualSavings: calculationData.absoluteSavings * 12,
-                savingsPercentage: calculationData.percentSavings
-            };
-            
-            return data;
-        }
+                
 
-        async function submitToGoogleSheets(data) {
-            try {
-                const response = await fetch(GOOGLE_SHEETS_URL, {
-                    method: ‘POST’,
-                    headers: {
-                        ‘Content-Type’: ‘application/json’,
-                    },
-                    body: JSON.stringify(data)
+                let num = parseFloat(value);
+
+                if (isNaN(num)) {
+
+                    input.value = formatUSD(0);
+
+                    return;
+
+                }
+
+                
+
+                input.value = formatUSD(num);
+
+            }
+
+
+
+            // Parse currency value
+
+            function parseCurrency(value) {
+
+                if (!value) return 0;
+
+                return parseFloat(value.replace(/[^0-9.]/g, '')) || 0;
+
+            }
+
+
+
+            // Scoped event listener for currency formatting
+
+            document.querySelector('.daily-connect-calculator').addEventListener('blur', function(e) {
+
+                if (e.target.id === 'communication' || e.target.id === 'billing' || 
+
+                    e.target.id === 'staffManagement' || e.target.id === 'enrollment' ||
+
+                    e.target.classList.contains('tool-cost')) {
+
+                    formatCurrency(e.target);
+
+                }
+
+            }, true);
+
+
+
+            function addAdditionalTool() {
+
+                if (additionalToolCount >= MAX_ADDITIONAL_TOOLS) return;
+
+                
+
+                additionalToolCount++;
+
+                const container = document.getElementById('additionalToolsContainer');
+
+                
+
+                const toolDiv = document.createElement('div');
+
+                toolDiv.className = 'additional-tool-item';
+
+                toolDiv.innerHTML = `
+
+                    <div class="input-group">
+
+                        <label>Tool Name</label>
+
+                        <input type="text" class="tool-name">
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label>Monthly Cost</label>
+
+                        <input type="text" class="tool-cost" placeholder="$0.00">
+
+                    </div>
+
+                    <button type="button" class="remove-btn" data-remove-tool>Remove</button>
+
+                `;
+
+                
+
+                container.appendChild(toolDiv);
+
+                
+
+                if (additionalToolCount >= MAX_ADDITIONAL_TOOLS) {
+
+                    const addBtn = document.getElementById('addToolBtn');
+
+                    addBtn.disabled = true;
+
+                    addBtn.textContent = `Maximum ${MAX_ADDITIONAL_TOOLS} tools reached`;
+
+                }
+
+            }
+
+
+
+            function removeAdditionalTool(button) {
+
+                button.parentElement.remove();
+
+                additionalToolCount--;
+
+                
+
+                const addBtn = document.getElementById('addToolBtn');
+
+                addBtn.disabled = false;
+
+                addBtn.textContent = '+ Add Another Tool';
+
+            }
+
+
+
+            function calculateSavings() {
+
+                // Validate required fields
+
+                const childrenCount = parseFloat(document.getElementById('childrenCount').value);
+
+                
+
+                if (!childrenCount || childrenCount < 1) {
+
+                    alert('Please enter the number of children in your center');
+
+                    return;
+
+                }
+
+
+
+                // Calculate current total costs
+
+                const costs = [
+
+                    parseCurrency(document.getElementById('communication').value),
+
+                    parseCurrency(document.getElementById('billing').value),
+
+                    parseCurrency(document.getElementById('staffManagement').value),
+
+                    parseCurrency(document.getElementById('enrollment').value)
+
+                ];
+
+
+
+                // Add additional tools costs
+
+                const additionalToolCosts = document.querySelectorAll('.daily-connect-calculator .tool-cost');
+
+                additionalToolCosts.forEach(input => {
+
+                    costs.push(parseCurrency(input.value));
+
                 });
-                
-                const result = await response.json();
-                
-                if (result.status === ‘success’) {
-                    console.log(‘Data successfully submitted to Google Sheets’);
-                    
-                    // Optional: Show success message or trigger analytics event
-                    // gtag(‘event’, ‘form_submit’, {
-                    //     ‘event_category’: ‘calculator’,
-                    //     ‘event_label’: ‘savings_calculated’
-                    // });
-                    
+
+
+
+                const currentTotal = costs.reduce((sum, cost) => sum + cost, 0);
+
+
+
+                // Calculate Daily Connect cost
+
+                let dailyConnectCost;
+
+                if (childrenCount >= 100) {
+
+                    // Show contact us message for 100+ children
+
+                    document.getElementById('inputForm').style.display = 'none';
+
+                    document.getElementById('noSavings').classList.remove('hidden');
+
+                    document.querySelector('.daily-connect-calculator .no-savings h3').textContent = 'Custom Pricing Available';
+
+                    document.querySelector('.daily-connect-calculator .no-savings p').textContent = 'For centers with 100+ children, we offer custom pricing tailored to your needs. Contact us to discuss your specific requirements and get a personalized quote.';
+
+                    return;
+
                 } else {
-                    console.error(’Error submitting to Google Sheets:’, result.message);
+
+                    dailyConnectCost = childrenCount * 1.40;
+
                 }
-            } catch (error) {
-                console.error(’Network error submitting to Google Sheets:’, error);
-                // Don’t show error to user - form still works, just data isn’t saved
-            }
-        }
 
-        function animateResults() {
-            const { currentTotal, dailyConnectCost, absoluteSavings, percentSavings } = calculationData;
-            const annualSavings = absoluteSavings * 12;
 
-            // Set all values using USD formatter
-            document.getElementById(‘currentTotal’).textContent = formatUSD(currentTotal);
-            document.getElementById(‘dailyConnectPrice’).textContent = formatUSD(dailyConnectCost);
-            document.getElementById(‘annualSavings’).textContent = formatUSD(annualSavings);
-            document.getElementById(‘savingsPercentage’).textContent = `${percentSavings.toFixed(1)}% savings`;
 
-            // Calculate bar widths (current cost = 100%, daily connect proportional)
-            const maxAmount = Math.max(currentTotal, dailyConnectCost);
-            const currentCostWidth = (currentTotal / maxAmount) * 100;
-            const dailyConnectWidth = (dailyConnectCost / maxAmount) * 100;
+                // Store calculation data
 
-            // Animate bars after a short delay
-            setTimeout(() => {
-                const currentBar = document.getElementById(‘currentCostBar’);
-                const dailyConnectBar = document.getElementById(‘dailyConnectBar’);
+                calculationData = {
+
+                    childrenCount,
+
+                    currentTotal,
+
+                    dailyConnectCost,
+
+                    absoluteSavings: Math.max(0, currentTotal - dailyConnectCost),
+
+                    percentSavings: currentTotal > 0 ? ((currentTotal - dailyConnectCost) / currentTotal * 100) : 0
+
+                };
+
+
+
+                // Show preview in email gate
+
+                const annualSavings = calculationData.absoluteSavings * 12;
+
+                document.getElementById('previewAmount').textContent = formatUSD(annualSavings);
+
                 
-                currentBar.style.width = currentCostWidth + ‘%’;
-                dailyConnectBar.style.width = dailyConnectWidth + ‘%’;
 
-                // Add labels inside bars after animation using USD formatter
+                if (calculationData.absoluteSavings > 0) {
+
+                    const percentSaved = calculationData.percentSavings.toFixed(0);
+
+                    document.getElementById('previewSubtitle').textContent = `That's ${percentSaved}% savings on your current costs!`;
+
+                } else {
+
+                    document.getElementById('previewSubtitle').textContent = 'Plus detailed comparison and options';
+
+                }
+
+
+
+                // Hide form and show email gate
+
+                document.getElementById('inputForm').style.display = 'none';
+
+                document.getElementById('emailGate').style.display = 'block';
+
+            }
+
+
+
+            function showResults() {
+
+                const email = document.getElementById('emailInput').value;
+
+                
+
+                if (!email || !email.includes('@')) {
+
+                    alert('Please enter a valid email address');
+
+                    return;
+
+                }
+
+
+
+                // Store email for future CRM integration
+
+                calculationData.email = email;
+
+
+
+                // Collect all form data for Google Sheets
+
+                const formData = collectFormData();
+
+                
+
+                // Send data to Google Sheets
+
+                submitToGoogleSheets(formData);
+
+
+
+                // Hide email gate
+
+                document.getElementById('emailGate').style.display = 'none';
+
+
+
+                // Check if there are savings
+
+                if (calculationData.dailyConnectCost >= calculationData.currentTotal) {
+
+                    document.getElementById('noSavings').classList.remove('hidden');
+
+                    return;
+
+                }
+
+
+
+                // Show results with animations
+
+                animateResults();
+
+                
+
+                document.getElementById('results').style.display = 'block';
+
+
+
+                // Scroll to results
+
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+
+            }
+
+
+
+            function collectFormData() {
+
+                // Get additional tools data
+
+                const additionalToolNames = [];
+
+                const additionalToolCosts = [];
+
+                
+
+                const toolNameInputs = document.querySelectorAll('.daily-connect-calculator .tool-name');
+
+                const toolCostInputs = document.querySelectorAll('.daily-connect-calculator .tool-cost');
+
+                
+
+                toolNameInputs.forEach((input, index) => {
+
+                    if (input.value.trim()) {
+
+                        additionalToolNames.push(input.value.trim());
+
+                        additionalToolCosts.push(parseCurrency(toolCostInputs[index].value));
+
+                    }
+
+                });
+
+
+
+                // Prepare data object for Google Sheets
+
+                const data = {
+
+                    email: calculationData.email,
+
+                    childrenCount: calculationData.childrenCount,
+
+                    communicationName: document.getElementById('communicationName').value,
+
+                    communicationCost: parseCurrency(document.getElementById('communication').value),
+
+                    billingName: document.getElementById('billingName').value,
+
+                    billingCost: parseCurrency(document.getElementById('billing').value),
+
+                    staffManagementName: document.getElementById('staffManagementName').value,
+
+                    staffManagementCost: parseCurrency(document.getElementById('staffManagement').value),
+
+                    enrollmentName: document.getElementById('enrollmentName').value,
+
+                    enrollmentCost: parseCurrency(document.getElementById('enrollment').value),
+
+                    additionalToolsNames: additionalToolNames,
+
+                    additionalToolsCosts: additionalToolCosts,
+
+                    currentTotal: calculationData.currentTotal,
+
+                    dailyConnectCost: calculationData.dailyConnectCost,
+
+                    monthlySavings: calculationData.absoluteSavings,
+
+                    annualSavings: calculationData.absoluteSavings * 12,
+
+                    savingsPercentage: calculationData.percentSavings
+
+                };
+
+                
+
+                return data;
+
+            }
+
+
+
+            async function submitToGoogleSheets(data) {
+
+                try {
+
+                    const response = await fetch(GOOGLE_SHEETS_URL, {
+
+                        method: 'POST',
+
+                        headers: {
+
+                            'Content-Type': 'application/json',
+
+                        },
+
+                        body: JSON.stringify(data)
+
+                    });
+
+                    
+
+                    const result = await response.json();
+
+                    
+
+                    if (result.status === 'success') {
+
+                        console.log('Data successfully submitted to Google Sheets');
+
+                    } else {
+
+                        console.error('Error submitting to Google Sheets:', result.message);
+
+                    }
+
+                } catch (error) {
+
+                    console.error('Network error submitting to Google Sheets:', error);
+
+                }
+
+            }
+
+
+
+            function animateResults() {
+
+                const { currentTotal, dailyConnectCost, absoluteSavings, percentSavings } = calculationData;
+
+                const annualSavings = absoluteSavings * 12;
+
+
+
+                // Set all values using USD formatter
+
+                document.getElementById('currentTotal').textContent = formatUSD(currentTotal);
+
+                document.getElementById('dailyConnectPrice').textContent = formatUSD(dailyConnectCost);
+
+                document.getElementById('annualSavings').textContent = formatUSD(annualSavings);
+
+                document.getElementById('savingsPercentage').textContent = `${percentSavings.toFixed(1)}% savings`;
+
+
+
+                // Calculate bar widths
+
+                const maxAmount = Math.max(currentTotal, dailyConnectCost);
+
+                const currentCostWidth = (currentTotal / maxAmount) * 100;
+
+                const dailyConnectWidth = (dailyConnectCost / maxAmount) * 100;
+
+
+
+                // Animate bars after a short delay
+
                 setTimeout(() => {
-                    if (currentCostWidth > 25) {
-                        document.getElementById(‘currentBarLabel’).textContent = formatUSD(currentTotal);
-                    }
-                    if (dailyConnectWidth > 25) {
-                        document.getElementById(‘dailyConnectBarLabel’).textContent = formatUSD(dailyConnectCost);
-                    }
-                }, 800);
-            }, 300);
-        }
+
+                    const currentBar = document.getElementById('currentCostBar');
+
+                    const dailyConnectBar = document.getElementById('dailyConnectBar');
+
+                    
+
+                    currentBar.style.width = currentCostWidth + '%';
+
+                    dailyConnectBar.style.width = dailyConnectWidth + '%';
+
+
+
+                    // Add labels inside bars after animation
+
+                    setTimeout(() => {
+
+                        if (currentCostWidth > 25) {
+
+                            document.getElementById('currentBarLabel').textContent = formatUSD(currentTotal);
+
+                        }
+
+                        if (dailyConnectWidth > 25) {
+
+                            document.getElementById('dailyConnectBarLabel').textContent = formatUSD(dailyConnectCost);
+
+                        }
+
+                    }, 800);
+
+                }, 300);
+
+            }
+
+
+
+            // Event delegation for dynamically added elements
+
+            document.querySelector('.daily-connect-calculator').addEventListener('click', function(e) {
+
+                if (e.target.hasAttribute('data-remove-tool')) {
+
+                    removeAdditionalTool(e.target);
+
+                }
+
+            });
+
+
+
+            // Initialize event listeners
+
+            document.getElementById('addToolBtn').addEventListener('click', addAdditionalTool);
+
+            document.getElementById('calculateBtn').addEventListener('click', calculateSavings);
+
+            document.getElementById('showResultsBtn').addEventListener('click', showResults);
+
+
+
+        })();
+
     </script>
+
 </body>
+
 </html>
